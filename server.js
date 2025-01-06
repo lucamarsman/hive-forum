@@ -10,6 +10,7 @@ const crypto = require('crypto');
 const { JsonWebTokenError } = require("jsonwebtoken");
 const jwt_decode = require("jwt-decode");
 const multer = require('multer');
+const path = require('path');
 
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(express.json()) // for parsing application/json
@@ -27,10 +28,12 @@ app.use('/posts', postRoutes); // use route
 const commentRoutes = require('./routes/commentRoutes'); // import comment routes
 app.use('/comments', commentRoutes); // use route
 
+const communityRoutes = require('./routes/communityRoutes'); // import comment routes
+app.use('/communities', communityRoutes); // use route
+
 app.engine('html', require('ejs').renderFile); 
 app.set('view-engine', 'html') // set view engine to ejs
-app.use('/public', express.static('public')); // set static folder
-app.use('/uploads', express.static('public/uploads')); // set static uploads folder
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
 app.listen(3000) // listen on port 3000

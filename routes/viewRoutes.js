@@ -48,6 +48,8 @@ router.get('/communities', ViewController.renderCommunityPage);
 
 router.get('/community-create', validateToken, ViewController.renderCommunityCreatePage);
 
+router.get('/communities/:communityName', ViewController.renderCommunity)
+
 
 
 module.exports = router; // export router

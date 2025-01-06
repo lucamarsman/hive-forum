@@ -14,7 +14,11 @@ const storage = multer.diskStorage({
     }
 });
 
-router.post('/communities/new-community', validateToken, postLimiter, upload.none(), CommunityController.createCommunity);
+const upload = multer({ storage: storage });
+
+router.post('/new-community', postLimiter, validateToken, upload.single("imageUpload"), CommunityController.createCommunity);
+
+router.get('/details/:communityName', CommunityController.fetchCommunityDetails);
 
 
 module.exports = router; // export router

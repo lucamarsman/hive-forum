@@ -113,4 +113,8 @@ exports.renderCommunityCreatePage = async (req, res) => {
     }
 }
 
+exports.renderCommunity = async (req, res) => {
+    res.render('communityView.ejs');
+}
+
 
