@@ -71,9 +71,7 @@ function updateJoinButton(action, communityName, button) {
 
     // Add the appropriate event listener
     newButton.addEventListener("click", () => {
-        const url = action === "join" 
-            ? `/communities/join?community=${communityName}` 
-            : `/communities/leave?community=${communityName}`;
+        const url = action === "join" ? `/communities/join?community=${communityName}` : `/communities/leave?community=${communityName}`;
         const method = "POST";
 
         fetch(url, { method })
