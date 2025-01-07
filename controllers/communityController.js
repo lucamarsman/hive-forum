@@ -36,3 +36,30 @@ exports.searchCommunities = async (req, res) => {
         // Handle the error appropriately
     }
 };
+
+exports.joinCommunity = async (req, res) => {
+    try {
+        Community.joinCommunity(req, res);
+    } catch (error) {
+        console.log("Something went wrong", error);
+        // Handle the error appropriately
+    }
+};
+
+exports.leaveCommunity = async (req, res) => {
+    try {
+        Community.leaveCommunity(req, res);
+    } catch (error) {
+        console.log("Something went wrong", error);
+        // Handle the error appropriately
+    }
+};
+
+exports.checkMembership = async (req, res) => {
+    try {
+        Community.checkMembership(req, res);
+    } catch (error) {
+        console.log("Something went wrong", error);
+        // Handle the error appropriately
+    }
+};

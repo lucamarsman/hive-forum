@@ -75,6 +75,72 @@ class Community {
         }
     }
 
+    static async joinCommunity(req, res){
+        if(res.authenticated){
+            try{
+                const communityName = req.query.community;
+                const communityResult = await queryDb("SELECT id FROM Communities WHERE name = ?", [communityName]);
+                const communityId = communityResult[0].id;
+
+                let decodedToken = jwt_decode(req.cookies['refresh-token']) // decode JWT token
+                const uid = decodedToken.user.userid; // get user ID from decoded JWT token
+
+                await queryDb("INSERT INTO CommunityMemberships (user_id, community_id, role, joined_at) VALUES (?,?,?,?)", [uid, communityId, "member", new Date(new Date().getTime())]);
+                res.sendStatus(200);
+            }catch(error){
+                console.log(error);
+                res.sendStatus(500);
+            }
+        }else{
+            res.redirect('/login');
+        }
+    }
+
+    static async leaveCommunity(req, res){
+        if(res.authenticated){
+            try{
+                const communityName = req.query.community;
+                const communityResult = await queryDb("SELECT id FROM Communities WHERE name = ?", [communityName]);
+                const communityId = communityResult[0].id;
+
+                let decodedToken = jwt_decode(req.cookies['refresh-token']) // decode JWT token
+                const uid = decodedToken.user.userid; // get user ID from decoded JWT token
+
+                await queryDb("DELETE FROM CommunityMemberships WHERE user_id = ? AND community_id = ?", [uid, communityId]);
+                res.sendStatus(200);
+            }catch(error){
+                console.log(error);
+                res.sendStatus(500);
+            }
+        }else{
+            res.redirect('/login');
+        }
+    }
+
+    static async checkMembership(req, res){
+        if(res.authenticated){
+            try{
+                const communityName = req.params.communityName;
+                const communityResult = await queryDb("SELECT id FROM Communities WHERE name = ?", [communityName]);
+                const communityId = communityResult[0].id;
+
+                let decodedToken = jwt_decode(req.cookies['refresh-token']) // decode JWT token
+                const uid = decodedToken.user.userid; // get user ID from decoded JWT token
+
+                const isMember = await queryDb("SELECT * FROM CommunityMemberships WHERE user_id = ? AND community_id = ?", [uid, communityId]);
+                if(isMember.length > 0){
+                    return res.sendStatus(200);
+                }
+                return res.sendStatus(403);
+            }catch(error){
+                console.log(error);
+                return res.sendStatus(500);
+            }
+        }else{
+            return res.redirect('/login');
+        }
+    }
+
 
 }
 

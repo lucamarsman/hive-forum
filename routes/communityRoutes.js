@@ -24,5 +24,11 @@ router.get('/fetch-communities', CommunityController.fetchCommunities);
 
 router.get('/api/search', CommunityController.searchCommunities);
 
+router.post('/join', validateToken, CommunityController.joinCommunity);
+
+router.post('/leave', validateToken, CommunityController.leaveCommunity);
+
+router.get('/:communityName/membership', validateToken, CommunityController.checkMembership);
+
 
 module.exports = router; // export router

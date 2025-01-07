@@ -8,7 +8,6 @@ const newPostBtn = document.getElementById("new-post-btn");
 const joinBtn = document.getElementById("join-btn");
 
 
-
 const path = window.location.pathname;
 const communityName = path.split('/')[2]; 
 
@@ -16,8 +15,13 @@ newPostBtn.addEventListener("click", () => {
     window.location.href = path + `/new-post`
 })
 
+document.addEventListener("DOMContentLoaded", () => {
+    loadCommunity();
+    checkMembership(communityName);
+})
 
-fetch(`/communities/details/${communityName}`)
+function loadCommunity(){
+    fetch(`/communities/details/${communityName}`)
     .then(response => response.json())
     .then(data => {
         const unpackedJson = data[0];
@@ -26,7 +30,6 @@ fetch(`/communities/details/${communityName}`)
         const createdAt = unpackedJson.created_at;
         const logoPath = unpackedJson.logo_path;
 
-
         communityHeader.innerHTML = "h/" + communityName;
         communityLogo.src = `/${logoPath}`;
 
@@ -34,4 +37,61 @@ fetch(`/communities/details/${communityName}`)
         creationDate.innerHTML = createdAt;
         communityDescription.innerHTML = communityDesc;
     })
+}
+
+function checkMembership(communityName) {
+    const joinBtn = document.getElementById("join-btn"); // Button element
+
+    fetch(`/communities/${communityName}/membership`)
+        .then(response => {
+            if (response.ok) {
+                // User is a member
+                console.log("User is a member of the community.");
+                joinBtn.innerHTML = "Leave";
+                updateJoinButton("leave", communityName, joinBtn);
+            } else if (response.status === 403) {
+                // User is not a member
+                console.log("User is not a member of the community.");
+                joinBtn.innerHTML = "Join";
+                updateJoinButton("join", communityName, joinBtn);
+            } else {
+                // Unexpected response
+                console.error("Unexpected response:", response.status);
+            }
+        })
+        .catch(error => {
+            console.error("Error checking membership:", error);
+        });
+}
+
+function updateJoinButton(action, communityName, button) {
+    // Remove all existing event listeners by replacing the button with a clone
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+
+    // Add the appropriate event listener
+    newButton.addEventListener("click", () => {
+        const url = action === "join" 
+            ? `/communities/join?community=${communityName}` 
+            : `/communities/leave?community=${communityName}`;
+        const method = "POST";
+
+        fetch(url, { method })
+            .then(response => {
+                if (response.ok) {
+                    console.log(`Successfully ${action === "join" ? "joined" : "left"} the community.`);
+                    newButton.innerHTML = action === "join" ? "Leave" : "Join";
+                    updateJoinButton(action === "join" ? "leave" : "join", communityName, newButton);
+                } else {
+                    console.error(`Failed to ${action === "join" ? "join" : "leave"} the community.`);
+                }
+            })
+            .catch(error => {
+                console.error(`Error performing ${action} action:`, error);
+            });
+    });
+}
+
+
+
 
