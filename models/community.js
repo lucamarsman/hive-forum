@@ -40,6 +40,37 @@ class Community {
         res.json(details);
     }
 
+    static async fetchCommunities(req, res){
+        const limit = 5; // number of communities per page
+        const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
+        const offset = (page - 1) * limit; // calculate offset
+
+        try{
+            const communities = await queryDb(`SELECT name, logo_path, description FROM Communities LIMIT ? OFFSET ?`, [ limit, offset]);
+            console.log('Communities fetched:', communities);
+            res.json(communities); // return posts as JSON
+        }catch(error){
+            console.error("Error fetching communities:", error);
+            res.status(500).json({ error: "An error occurred while fetching communities" });
+        }
+    }
+
+    static async searchCommunities(req, res){
+        const searchVal = `%${req.query.query}%`; // get search query from request query
+        const limit = 5; // number of posts per page
+        const page = req.query.page ? parseInt(req.query.page) : 1; 
+        const offset = (page - 1) * limit; 
+
+        try{
+            const communities = await queryDb(`SELECT name, logo_path, description FROM Communities WHERE name LIKE ? LIMIT ? OFFSET ?`, [searchVal, limit, offset]);
+            console.log('Communities fetched:', communities);
+            res.json(communities); // return posts as JSON
+        }catch(error){
+            console.error("Error fetching communities:", error);
+            res.status(500).json({ error: "An error occurred while fetching communities" });
+        }
+    }
+
 
 }
 
