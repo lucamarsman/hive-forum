@@ -19,9 +19,6 @@ app.use(cookieParser()) // for parsing cookies
 const userRoutes = require('./routes/userRoutes'); // import user routes
 app.use('/user', userRoutes); // use route
 
-const viewRoutes = require('./routes/viewRoutes'); // import view routes
-app.use('/', viewRoutes); // use route
-
 const postRoutes = require('./routes/postRoutes'); // import post routes
 app.use('/posts', postRoutes); // use route
 
@@ -30,6 +27,9 @@ app.use('/comments', commentRoutes); // use route
 
 const communityRoutes = require('./routes/communityRoutes'); // import comment routes
 app.use('/communities', communityRoutes); // use route
+
+const viewRoutes = require('./routes/viewRoutes'); // import view routes
+app.use('/', viewRoutes); // use route
 
 app.engine('html', require('ejs').renderFile); 
 app.set('view-engine', 'html') // set view engine to ejs
