@@ -27,6 +27,10 @@ class Community {
             
             const insertedId = result.insertId;
             const community = await queryDb('SELECT name FROM Communities WHERE id = ?', [insertedId]);
+
+            // Add owner to membership table
+            await queryDb("INSERT INTO CommunitiesMemberships (user_id, community_id, role, joined_at) VALUES (?,?,?,?,?)", [uid, insertedId, "moderator", payload.createdAt]);
+
             res.redirect(`/communities/${community[0].name}`);
         }else{ // if user is not authenticated
             res.redirect('/login'); // redirect to login page
