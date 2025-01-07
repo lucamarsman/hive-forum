@@ -449,6 +449,10 @@ hr {
     color:#5C6C74;
 }
 
+
+
+/* Community List Style */
+
 #comm-sub-header{
     display:flex;
     width:100%;
@@ -470,6 +474,38 @@ hr {
 
 #comm-sub-header > a{
    width:10%;
+}
+
+#community-list{
+    display:flex;
+    gap:5%;
+    justify-content: center;
+    padding-top:2rem;
+    flex-wrap: wrap;
+}
+
+.community-item{
+    display:flex;
+    gap:1rem;
+}
+
+#community-logo{
+    width:36px;
+    height:36px;
+    border-radius: 50%;
+}
+
+#community-desc{
+    padding:0;
+    margin:0;
+    display:flex;
+    font-size:0.75rem;
+}
+
+#community-details{
+    display:flex;
+    flex-direction: column;
+    gap:0.3rem;
 }
 
 /* Community view styling */
