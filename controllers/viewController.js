@@ -117,4 +117,8 @@ exports.renderCommunity = async (req, res) => {
     res.render('communityView.ejs');
 }
 
+exports.renderCommunityNewPost = async (req, res) => {
+    res.render('communityNewPost.ejs');
+}
+
 

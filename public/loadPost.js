@@ -3,6 +3,7 @@ let isLoading = false; // Flag to check if the server is currently loading more 
 let morePostsAvailable = true; // Flag to check if there are more posts available
 let searchMode = false;  // Flag to check if search mode is active
 let lastSearchQuery = ''; // Store the last search query
+let locationPath = window.location.pathname;
 
 function debounce(fn, delay) { // Debounce function for scroll event listener
     let timer;
@@ -31,6 +32,14 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
     let url = `/posts/fetch-posts?page=${currentPage}`; // Default URL
     if (searchMode && searchQuery) { // If search mode is active and there is a search query
         url = `/posts/api/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage}`; // Set URL to search endpoint
+    }
+
+    if(locationPath.includes("/communities")){ // Default URL for community
+      url = `/posts/fetch-posts?page=${currentPage}&community=${communityName}`
+
+      if(searchMode && searchQuery){
+        url = `/posts/api/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage}&community=${communityName}`
+      }
     }
 
     fetch(url) // Fetch posts from server

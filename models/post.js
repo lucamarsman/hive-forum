@@ -12,11 +12,25 @@ class Post { // post model
             let decodedToken = jwt_decode(req.cookies['refresh-token']) // decode JWT token
             const uid = decodedToken.user.userid; // get user ID from decoded JWT token
             let result;
-            if(req.file){
-                result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id) VALUES (?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid]); // insert post into database with media
+
+            if(req.params.communityName){
+                const communityResult = await queryDb("SELECT id FROM Communities WHERE name = ?", [req.params.communityName])
+                const communityId = communityResult[0].id;
+
+                if(req.file){
+                    result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id, community_id) VALUES (?,?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid, communityId]); // insert post into database with media
+                }else{
+                    result = await queryDb('INSERT INTO Posts (title, content, user_id, community_id) VALUES (?,?,?,?)', [post_payload.title, post_payload.body, uid, communityId]); // insert post into database
+                }
             }else{
-                result = await queryDb('INSERT INTO Posts (title, content, user_id) VALUES (?,?,?)', [post_payload.title, post_payload.body, uid]); // insert post into database
+                if(req.file){
+                    result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id) VALUES (?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid]); // insert post into database with media
+                }else{
+                    result = await queryDb('INSERT INTO Posts (title, content, user_id) VALUES (?,?,?)', [post_payload.title, post_payload.body, uid]); // insert post into database
+                }
             }
+
+            
             const postId = result.insertId // get post ID of newly created post
 
             res.redirect(`/post/${postId}`); // redirect to newly created post page
@@ -28,6 +42,52 @@ class Post { // post model
 
     static async fetchPost(req, res) { // fetch post
         if(res.authenticated){ // if user is authenticated
+            if(req.query.community){
+                try{
+                    console.log(req.query.community)
+                    const communityResult = await queryDb(`SELECT id FROM Communities WHERE name = ?`, [req.query.community])
+                    const communityId = communityResult[0].id;
+
+                    const limit = 5; // number of posts per page
+                    const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
+                    const offset = (page - 1) * limit; // calculate offset
+                    let decodedToken = jwt_decode(req.cookies['refresh-token']); // decode JWT token
+                    const userId = decodedToken.user.userid; // get user ID from decoded JWT token
+                    
+                    // Fetch posts from db via user ID, limit, and offset. This version includes the like and save status of each post for the authenticated user
+                    const posts = await queryDb(`
+                    SELECT 
+                        p.post_id,
+                        p.title,
+                        p.content,
+                        p.media_path,
+                        p.timestamp,
+                        p.user_id,
+                        p.likeCount,
+                        u.username,   
+                        EXISTS(
+                            SELECT 1 
+                            FROM likes 
+                            WHERE likes.post_id = p.post_id AND likes.user_id = ?
+                        ) AS liked,
+                        EXISTS(
+                            SELECT 1 
+                            FROM saves 
+                            WHERE saves.post_id = p.post_id AND saves.user_id = ?
+                        ) AS saved
+                    FROM posts p
+                    JOIN Users u ON p.user_id = u.user_id  
+                    WHERE p.community_id = ?
+                    ORDER BY p.timestamp DESC
+                    LIMIT ? OFFSET ?
+                `, [userId, userId, communityId, limit, offset]);
+                    res.json(posts); // return posts as JSON
+                    return;
+                }catch(error){
+                    console.log(error);
+                }
+            }
+
             try{ // try to fetch posts
                 const limit = 5; // number of posts per page
                 const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
@@ -125,6 +185,44 @@ class Post { // post model
 
     static async searchPost(req, res){ // Search posts by title or content
         if(res.authenticated){ // if user is authenticated
+            if(req.query.community){
+                let decodedToken = jwt_decode(req.cookies['refresh-token']); // decode JWT token
+                const userId = decodedToken.user.userid; // get user ID from decoded JWT token
+                const searchVal = `%${req.query.query}%`; // get search query from request query
+                const limit = 5; // number of posts per page
+                const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
+                const offset = (page - 1) * limit; // calculate offset
+                const communityResult = await queryDb(`SELECT id FROM Communities WHERE name = ?`, [req.query.community]);
+                const communityId = communityResult[0].id;
+                console.log(communityId)
+                
+                // Fetch posts from db via search query, limit, and offset. This version includes the like and save status of each post for the authenticated user
+                const posts = await queryDb(`
+                    SELECT 
+                        Posts.*,
+                        u.username, 
+                        EXISTS (
+                            SELECT 1 
+                            FROM likes 
+                            WHERE likes.post_id = Posts.post_id AND likes.user_id = ?
+                        ) AS liked,
+                        EXISTS (
+                            SELECT 1 
+                            FROM saves 
+                            WHERE saves.post_id = Posts.post_id AND saves.user_id = ?
+                        ) AS saved
+                    FROM Posts 
+                    JOIN Users u ON Posts.user_id = u.user_id
+                    WHERE (content LIKE ? OR title LIKE ? OR u.username LIKE ?)
+                    AND community_id = ?
+                    ORDER BY post_id DESC 
+                    LIMIT ? OFFSET ?`, 
+                    [userId, userId, searchVal, searchVal, searchVal, communityId, limit, offset]
+                );
+                res.json(posts); // return posts as JSON
+                return;
+            }
+
             let decodedToken = jwt_decode(req.cookies['refresh-token']); // decode JWT token
             const userId = decodedToken.user.userid; // get user ID from decoded JWT token
             const searchVal = `%${req.query.query}%`; // get search query from request query

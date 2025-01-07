@@ -48,7 +48,9 @@ router.get('/communities', ViewController.renderCommunityPage);
 
 router.get('/community-create', validateToken, ViewController.renderCommunityCreatePage);
 
-router.get('/communities/:communityName', ViewController.renderCommunity)
+router.get('/communities/:communityName', ViewController.renderCommunity);
+
+router.get('/communities/:communityName/new-post', ViewController.renderCommunityNewPost);
 
 
 
