@@ -543,6 +543,7 @@ hr {
     margin-right:20px;
     margin-top:auto;
     margin-bottom:5px;
+    display:flex;
 }
 
 #community-btns > button {

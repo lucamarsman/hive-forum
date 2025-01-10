@@ -52,11 +52,13 @@ function checkMembership(communityName) {
                 // User is a member
                 console.log("User is a member of the community.");
                 joinBtn.innerHTML = "Leave";
+                document.getElementById('new-post-btn').style.display = "visible";
                 updateJoinButton("leave", communityName, joinBtn);
             } else if (response.status === 403) {
                 // User is not a member
                 console.log("User is not a member of the community.");
                 joinBtn.innerHTML = "Join";
+                document.getElementById('new-post-btn').style.display = "none";
                 updateJoinButton("join", communityName, joinBtn);
             } else {
                 // Unexpected response
@@ -84,6 +86,12 @@ function updateJoinButton(action, communityName, button) {
                     console.log(`Successfully ${action === "join" ? "joined" : "left"} the community.`);
                     newButton.innerHTML = action === "join" ? "Leave" : "Join";
                     updateJoinButton(action === "join" ? "leave" : "join", communityName, newButton);
+                    if(action == "leave"){
+                        document.getElementById("new-post-btn").style.display = "none";
+                    }else{
+                        document.getElementById("new-post-btn").style.display = "flex";
+                    }
+                    
                 } else {
                     console.error(`Failed to ${action === "join" ? "join" : "leave"} the community.`);
                 }
@@ -93,7 +101,6 @@ function updateJoinButton(action, communityName, button) {
             });
     });
 }
-
 
 
 

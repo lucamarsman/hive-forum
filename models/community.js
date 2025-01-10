@@ -86,13 +86,13 @@ class Community {
                 const uid = decodedToken.user.userid; // get user ID from decoded JWT token
 
                 await queryDb("INSERT INTO CommunityMemberships (user_id, community_id, role, joined_at) VALUES (?,?,?,?)", [uid, communityId, "member", new Date(new Date().getTime())]);
-                res.sendStatus(200);
+                return res.sendStatus(200);
             }catch(error){
                 console.log(error);
-                res.sendStatus(500);
+                return res.sendStatus(500);
             }
         }else{
-            res.redirect('/login');
+            return res.redirect('/login');
         }
     }
 
