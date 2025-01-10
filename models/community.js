@@ -141,6 +141,17 @@ class Community {
         }
     }
 
+    static async getCommunityStats(req, res){
+        const communityName = req.params.communityName;
+        const communityResult = await queryDb("SELECT id FROM Communities WHERE name = ?", [communityName]);
+        const communityId = communityResult[0].id;
+
+        const memberCountResult = await queryDb("SELECT COUNT(*) AS total_members FROM CommunityMemberships WHERE community_id = ?", [communityId]);
+        const memberCount = memberCountResult[0].total_members;
+
+        res.json(memberCount)
+    }
+
 
 }
 

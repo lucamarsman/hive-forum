@@ -63,3 +63,12 @@ exports.checkMembership = async (req, res) => {
         // Handle the error appropriately
     }
 };
+
+exports.getCommunityStats = async (req, res) => {
+    try {
+        Community.getCommunityStats(req, res);
+    } catch (error) {
+        console.log("Something went wrong", error);
+        // Handle the error appropriately
+    }
+};

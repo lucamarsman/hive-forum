@@ -30,5 +30,7 @@ router.post('/leave', validateToken, CommunityController.leaveCommunity);
 
 router.get('/:communityName/membership', validateToken, CommunityController.checkMembership);
 
+router.get('/stats/:communityName', validateToken, CommunityController.getCommunityStats);
+
 
 module.exports = router; // export router

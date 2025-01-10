@@ -7,6 +7,9 @@ const communityDescription = document.getElementById("description");
 const newPostBtn = document.getElementById("new-post-btn");
 const joinBtn = document.getElementById("join-btn");
 const searchBar = document.getElementById("search-bar");
+const memberCount = document.getElementById("member-count");
+const communityRanking = document.getElementById("size-rank");
+const createPostBtn = document.getElementById("new-post-btn")
 
 
 
@@ -40,6 +43,13 @@ function loadCommunity(){
         rightHeader.innerHTML = communityName;
         creationDate.innerHTML = createdAt;
         communityDescription.innerHTML = communityDesc;
+    });
+
+    fetch(`/communities/stats/${communityName}`)
+    .then(response => response.json())
+    .then(data => {
+            console.log(data)
+            memberCount.innerHTML = data;
     })
 }
 
@@ -87,9 +97,11 @@ function updateJoinButton(action, communityName, button) {
                     newButton.innerHTML = action === "join" ? "Leave" : "Join";
                     updateJoinButton(action === "join" ? "leave" : "join", communityName, newButton);
                     if(action == "leave"){
-                        document.getElementById("new-post-btn").style.display = "none";
+                        createPostBtn.style.display = "none";
+                        memberCount.innerHTML--;
                     }else{
-                        document.getElementById("new-post-btn").style.display = "flex";
+                        createPostBtn.style.display = "flex";
+                        memberCount.innerHTML++;
                     }
                     
                 } else {
