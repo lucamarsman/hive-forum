@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Index</title>
   <link rel="stylesheet" type="text/css" href="/public/assets/community.css" title="style" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -11,6 +11,7 @@
 <div class="wrapper">
     <header id="main-nav">
       <div id="brand">
+        <img id="toggle-btn" src="/public/assets/images/toggle.svg">
         <img src="/public/assets/images/hive-logo.svg" id="logo">
         <img src="/public/assets/images/Hive.svg" id="brand-text">
       </div>
@@ -102,6 +103,35 @@
   <script src="/public/loadPost.js"></script>
 
   <script>
+    // Check viewport size on load and on resize
+    const phoneWidthQuery = window.matchMedia("(max-width: 1280px)");
+
+    // Function to handle viewport changes
+    function handleViewportChange(e) {
+        console.log(`Viewport width: ${window.innerWidth}px`);
+        if (e.matches) {
+            console.log("Viewport is phone width or smaller.");
+            document.getElementById("toggle-btn").style.display = "block"; // Show button
+        } else {
+            console.log("Viewport is larger than phone width.");
+            document.getElementById("toggle-btn").style.display = "none"; // Hide button
+        }
+    }
+
+    // Add event listener for matchMedia
+    phoneWidthQuery.addEventListener("change", handleViewportChange);
+
+    // Trigger the function initially to handle current state
+    handleViewportChange(phoneWidthQuery);
+
+    // Additional debug: Listen for resize to ensure innerWidth changes are detected
+    window.addEventListener("resize", () => {
+        console.log(`Resized. Current width: ${window.innerWidth}px`);
+    });
+
+
+    const toggleBtn = document.getElementById("toggle-btn");
+    const sideNav = document.getElementById("content-start");
     const homeBtn = document.getElementById("home-button");
     const popularBtn = document.getElementById("popular-button");
     const dropdownMenuRecent = document.getElementById('dropdown-menu-recent');
@@ -163,6 +193,16 @@
             dropdownArrow3.classList.remove("rotate-arrow");
         }
     });
+
+    toggleBtn.addEventListener("click", () => {
+      if (sideNav.style.display === "none" || sideNav.style.display === "") {
+        sideNav.style.display = "block"; 
+        toggleBtn.src = "/public/assets/images/cross.svg";
+      } else {
+        sideNav.style.display = "none"; 
+        toggleBtn.src = "/public/assets/images/toggle.svg";
+      }
+    })
 
 
   </script>
