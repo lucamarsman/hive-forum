@@ -42,6 +42,8 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
       }
     }
 
+    console.log(url)
+
     fetch(url) // Fetch posts from server
         .then(response => response.json()) // Parse response as JSON
         .then(posts => { // Handle posts

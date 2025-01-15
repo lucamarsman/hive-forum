@@ -154,7 +154,7 @@ class User { // User class
         res.clearCookie("refresh-token");
     
         // Redirect to the home or login page
-        res.redirect('/');
+        return res.redirect('/');
     }
 
     static async getUserImage(req, res) { // Get user profile image
@@ -470,6 +470,20 @@ class User { // User class
             res.json(userDetails); // Send user details to client
         }catch(error){ // Catch any errors
             console.log(error)
+        }
+    }
+
+    static async checkAuth(req, res){
+        console.log(res.authenticated)
+        try{
+            if(res.authenticated){
+                return res.sendStatus(200);
+            }else{
+                return res.sendStatus(401);
+            }
+        }catch(error){
+            console.log(error);
+            return res.sendStatus(500);
         }
     }
 

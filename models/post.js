@@ -81,8 +81,7 @@ class Post { // post model
                     ORDER BY p.timestamp DESC
                     LIMIT ? OFFSET ?
                 `, [userId, userId, communityId, limit, offset]);
-                    res.json(posts); // return posts as JSON
-                    return;
+                    return res.json(posts); // return posts as JSON
                 }catch(error){
                     console.log(error);
                 }
@@ -128,6 +127,39 @@ class Post { // post model
                 console.log(error) // log error
             }
         }else{ // if user is not authenticated
+            if(req.query.community){
+                try{
+                    console.log(req.query.community)
+                    const communityResult = await queryDb(`SELECT id FROM Communities WHERE name = ?`, [req.query.community])
+                    const communityId = communityResult[0].id;
+
+                    const limit = 5; // number of posts per page
+                    const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
+                    const offset = (page - 1) * limit; // calculate offset
+                    
+                    // Fetch posts from db via user ID, limit, and offset. This version includes the like and save status of each post for the authenticated user
+                    const posts = await queryDb(`
+                    SELECT 
+                        p.post_id,
+                        p.title,
+                        p.content,
+                        p.media_path,
+                        p.timestamp,
+                        p.user_id,
+                        p.likeCount,
+                        u.username 
+                    FROM posts p
+                    JOIN Users u ON p.user_id = u.user_id  
+                    WHERE p.community_id = ?
+                    ORDER BY p.timestamp DESC
+                    LIMIT ? OFFSET ?
+                `, [communityId, limit, offset]);
+                    return res.json(posts); // return posts as JSON
+                }catch(error){
+                    console.log(error);
+                }
+            }
+
             const limit = 5; // number of posts per page
             const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
             const offset = (page - 1) * limit; // calculate offset

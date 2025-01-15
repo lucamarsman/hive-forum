@@ -23,6 +23,7 @@ router.post('/register', registerLimiter, validateToken, userController.register
 router.get('/register/verify', validateToken, userController.registerConfirm); // Register a new user
 router.post("/login", userController.login); // Login a user
 router.get('/logout', userController.logout); // Logout a user
+router.get('/checkAuth', validateToken, userController.checkAuth);
 router.post('/reset', resetLimiter, userController.getResetLink); // Send password reset link
 router.get('/password-reset', userController.getPasswordReset) // Get password reset page
 router.post('/reset/:reset_link', userController.resetPassword); // Reset password

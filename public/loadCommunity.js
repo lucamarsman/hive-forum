@@ -48,7 +48,6 @@ function loadCommunity(){
     fetch(`/communities/stats/${communityName}`)
     .then(response => response.json())
     .then(data => {
-            console.log(data)
             memberCount.innerHTML = data;
     })
 }
@@ -58,6 +57,7 @@ function checkMembership(communityName) {
 
     fetch(`/communities/${communityName}/membership`)
         .then(response => {
+            console.log(response)
             if (response.ok) {
                 // User is a member
                 console.log("User is a member of the community.");
@@ -104,6 +104,9 @@ function updateJoinButton(action, communityName, button) {
                         memberCount.innerHTML++;
                     }
                     
+                } else if(response.status == 401){
+                    console.log("unauthorized");
+                    window.location.href = "/login"; 
                 } else {
                     console.error(`Failed to ${action === "join" ? "join" : "leave"} the community.`);
                 }

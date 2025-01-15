@@ -15,11 +15,7 @@ exports.renderRegister = async (req, res) => { // render register page
 
 exports.renderHomepage = async (req, res) => { // render homepage
     try{
-        if(res.authenticated){
-            res.render('index_a.ejs');
-        }else{
-            res.render('index.ejs');
-        }
+        res.render('index.ejs');
     }catch(error){
         console.log(error)
     }

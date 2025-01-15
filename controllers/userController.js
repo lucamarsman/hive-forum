@@ -153,3 +153,12 @@ exports.fetchUserById= async (req, res) => { // Fetch user by id
     }
 }
 
+exports.checkAuth = async (req, res) => { // Fetch user by id
+    try {
+        User.checkAuth(req, res);
+    } catch (error) {
+        console.log("Something went wrong", error);
+        // Handle the error appropriately
+    }
+}
+
