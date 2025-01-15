@@ -152,6 +152,36 @@ class Community {
         res.json(memberCount)
     }
 
+    static async getPopular(req, res) {
+        try {
+            const query = `
+                SELECT 
+                    c.id, 
+                    c.name, 
+                    c.description, 
+                    c.logo_path, 
+                    COUNT(cm.user_id) AS member_count
+                FROM 
+                    Communities c
+                INNER JOIN 
+                    CommunityMemberships cm
+                ON 
+                    c.id = cm.community_id
+                GROUP BY 
+                    c.id, c.name, c.description, c.logo_path
+                ORDER BY 
+                    member_count DESC
+                LIMIT 10;
+            `;
+            const results = await queryDb(query);
+            res.status(200).json(results);
+        } catch (error) {
+            console.error("Error fetching popular communities:", error);
+            res.status(500).json({ error: "An error occurred while fetching popular communities." });
+        }
+    }
+    
+
 
 }
 

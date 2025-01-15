@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <title>Index</title>
-  <link rel="stylesheet" type="text/css" href="/public/assets/homepage.css" title="style" />
+  <link rel="stylesheet" type="text/css" href="/public/assets/community.css" title="style" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
@@ -11,6 +11,7 @@
 <div class="wrapper">
     <header id="main-nav">
       <div id="brand">
+        <img id="toggle-btn" src="/public/assets/images/toggle.svg">
         <img src="/public/assets/images/hive-logo.svg" id="logo">
         <img src="/public/assets/images/Hive.svg" id="brand-text">
       </div>
@@ -62,6 +63,15 @@
           </div>
       </div>
 
+    <div id="community-content">
+      <div id = "community-banner">
+        <div id="logoContainer"><img id="community-logo" src="/public/assets/images/home-active.svg"></div>
+        <h1 id="community-name"></h1>
+        <div id="community-btns">
+            <button id="new-post-btn"><span><img>Create Post</span></button>
+        </div>
+      </div>
+
       <div id="postsContainer">
         <hr>
       </div>
@@ -70,6 +80,7 @@
         <h3 id="communities-header">POPULAR COMMUNITIES</h3>
         <div id="popular-communities-container"></div>
       </div>
+    </div>
     </main>
 
   </div>
@@ -176,6 +187,42 @@
           .catch(error => {
               console.error("Error checking auth status:", error);
           });
+
+        fetch('/communities/getPopular')
+          .then(response => response.json())
+          .then(data => {
+            data.forEach((community, index) => {
+              const communityItem = document.createElement("span");
+              communityItem.id = `pop-item-${index}`;
+              communityItem.className = "pop-item";
+
+              communityItem.addEventListener("click", () => {
+                window.location.href = `/communities/${community.name}`;
+              })
+
+              const communityLogo = document.createElement("img");
+              communityLogo.src = community.logo_path;
+
+              const communityStat = document.createElement("div");
+              communityStat.className = "community-stat";
+
+              const communityName = document.createElement("h3");
+              communityName.innerHTML = "h/" + community.name;
+              communityName.className = "pop-name";
+
+              const communityMemberCount = document.createElement("p")
+              communityMemberCount.innerHTML = community.member_count + (community.member_count > 1 ? " members" : " member");;
+              communityMemberCount.className = "pop-count";
+
+              communityStat.appendChild(communityName);
+              communityStat.appendChild(communityMemberCount);
+
+              communityItem.appendChild(communityLogo);
+              communityItem.appendChild(communityStat);
+
+              document.getElementById("content-end").appendChild(communityItem);
+            });
+          })
     });
 
 

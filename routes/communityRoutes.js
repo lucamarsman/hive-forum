@@ -32,5 +32,7 @@ router.get('/:communityName/membership', validateToken, CommunityController.chec
 
 router.get('/stats/:communityName', validateToken, CommunityController.getCommunityStats);
 
+router.get('/getPopular', CommunityController.getPopular);
+
 
 module.exports = router; // export router

@@ -72,3 +72,12 @@ exports.getCommunityStats = async (req, res) => {
         // Handle the error appropriately
     }
 };
+
+exports.getPopular = async (req, res) => {
+    try {
+        Community.getPopular(req, res);
+    } catch (error) {
+        console.log("Something went wrong", error);
+        // Handle the error appropriately
+    }
+};
