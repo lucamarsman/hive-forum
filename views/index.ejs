@@ -138,6 +138,51 @@
         }
     });
 
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn1 = document.getElementById("btn1");
+      const btn2 = document.getElementById("btn2");
+
+      const updateButtons = (isAuthenticated) => {
+          if (isAuthenticated) {
+              btn1.textContent = "Profile";
+              btn1.onclick = () => window.location.href = '/profile';
+              btn2.textContent = "Log Out";
+              btn2.onclick = async () => {
+                  try {
+                      const response = await fetch('/user/logout', { method: 'GET' });
+                      if (response.ok) {
+                          window.location.reload(); // Reload page to reflect logout state
+                      } else {
+                          console.error("Logout failed:", response.statusText);
+                      }
+                  } catch (error) {
+                      console.error("Error logging out:", error);
+                  }
+              };
+          } else {
+              btn1.textContent = "Register";
+              btn1.onclick = () => window.location.href = '/register';
+              btn2.textContent = "Log In";
+              btn2.onclick = () => window.location.href = '/login';
+          }
+      };
+
+      // Check authentication status on page load
+      fetch('/user/checkAuth')
+          .then(response => {
+              const isAuthenticated = response.status === 200;
+              updateButtons(isAuthenticated);
+          })
+          .catch(error => {
+              console.error("Error checking auth status:", error);
+          });
+    });
+
+
+
+  
+      
+
 
   </script>
 </body>
