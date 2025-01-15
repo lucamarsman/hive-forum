@@ -51,7 +51,6 @@ class Community {
 
         try{
             const communities = await queryDb(`SELECT name, logo_path, description FROM Communities LIMIT ? OFFSET ?`, [ limit, offset]);
-            console.log('Communities fetched:', communities);
             res.json(communities); // return posts as JSON
         }catch(error){
             console.error("Error fetching communities:", error);
@@ -92,7 +91,7 @@ class Community {
                 return res.sendStatus(500);
             }
         }else{
-            return res.redirect('/login');
+            return res.sendStatus(401);
         }
     }
 
@@ -113,7 +112,7 @@ class Community {
                 res.sendStatus(500);
             }
         }else{
-            res.redirect('/login');
+            return res.sendStatus(401);
         }
     }
 
@@ -128,6 +127,7 @@ class Community {
                 const uid = decodedToken.user.userid; // get user ID from decoded JWT token
 
                 const isMember = await queryDb("SELECT * FROM CommunityMemberships WHERE user_id = ? AND community_id = ?", [uid, communityId]);
+                console.log("isMEMBER: " + isMember);
                 if(isMember.length > 0){
                     return res.sendStatus(200);
                 }
@@ -137,7 +137,7 @@ class Community {
                 return res.sendStatus(500);
             }
         }else{
-            return res.redirect('/login');
+            return res.sendStatus(403);
         }
     }
 
