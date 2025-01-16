@@ -68,7 +68,7 @@
         <div id="logoContainer"><img id="community-logo" src="/public/assets/images/home-active.svg"></div>
         <h1 id="community-name"></h1>
         <div id="community-btns">
-            <button id="new-post-btn"><span><img>Create Post</span></button>
+            <button id="new-post-btn">Create Post</button>
         </div>
       </div>
 
@@ -87,6 +87,34 @@
 
   <script src="/public/loadPost.js"></script>
   <script>
+    // Check viewport size on load and on resize
+    const phoneWidthQuery = window.matchMedia("(max-width: 1280px)");
+
+    // Function to handle viewport changes
+    function handleViewportChange(e) {
+        console.log(`Viewport width: ${window.innerWidth}px`);
+        if (e.matches) {
+            console.log("Viewport is phone width or smaller.");
+            document.getElementById("toggle-btn").style.display = "block"; // Show button
+        } else {
+            console.log("Viewport is larger than phone width.");
+            document.getElementById("toggle-btn").style.display = "none"; // Hide button
+        }
+    }
+
+    // Add event listener for matchMedia
+    phoneWidthQuery.addEventListener("change", handleViewportChange);
+
+    // Trigger the function initially to handle current state
+    handleViewportChange(phoneWidthQuery);
+
+    // Additional debug: Listen for resize to ensure innerWidth changes are detected
+    window.addEventListener("resize", () => {
+        console.log(`Resized. Current width: ${window.innerWidth}px`);
+    });
+
+    const toggleBtn = document.getElementById("toggle-btn");
+    const sideNav = document.getElementById("content-start");
     const homeBtn = document.getElementById("home-button");
     const popularBtn = document.getElementById("popular-button");
     const dropdownMenuRecent = document.getElementById('dropdown-menu-recent');
@@ -98,6 +126,16 @@
     const dropdownArrow1 = document.querySelector(".dropdown-arrow-1");
     const dropdownArrow2 = document.querySelector(".dropdown-arrow-2");
     const dropdownArrow3 = document.querySelector(".dropdown-arrow-3");
+
+    toggleBtn.addEventListener("click", () => {
+      if (sideNav.style.display === "none" || sideNav.style.display === "") {
+        sideNav.style.display = "block"; 
+        toggleBtn.src = "/public/assets/images/cross.svg";
+      } else {
+        sideNav.style.display = "none"; 
+        toggleBtn.src = "/public/assets/images/toggle.svg";
+      }
+    })
 
     homeBtn.addEventListener("click", () => {
       if(!homeBtn.classList.contains("active")){
