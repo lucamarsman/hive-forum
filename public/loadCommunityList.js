@@ -49,7 +49,7 @@ function loadCommunities(searchQuery = '') {
                     communityNumber.innerHTML = index + 1;
 
                     const communityLogo = document.createElement("img");
-                    communityLogo.id = "community-logo";
+                    communityLogo.className = "community-list-logo";
                     communityLogo.src = communityLogoPath;
 
                     const communityDetailsContainer = document.createElement("div");
