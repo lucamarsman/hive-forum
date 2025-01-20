@@ -18,6 +18,15 @@ exports.fetchCommunityDetails = async (req, res) => {
     }
 };
 
+exports.fetchCommunityDetailsViaId = async (req, res) => {
+    try {
+        Community.fetchCommunityDetailsViaId(req, res);
+    } catch (error) {
+        console.log("Something went wrong", error);
+        // Handle the error appropriately
+    }
+}
+
 exports.fetchCommunities = async (req, res) => {
     try {
         Community.fetchCommunities(req, res);

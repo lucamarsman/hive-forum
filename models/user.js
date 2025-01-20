@@ -171,15 +171,20 @@ class User { // User class
             const result = await queryDb("SELECT image_path FROM ProfilePictures WHERE user_id = ?", [userId]);
         
             if (result.length > 0) {
-              const imageURL = result[0].image_path; // Assuming one result per user
-              res.json({ image_url: imageURL }); // Send as JSON object with "image_url" key
+                const relativePath = result[0].image_path; 
+                const sanitizedPath = relativePath.replace(/\\/g, '/');
+                const imageURL = `${req.protocol}://${req.get('host')}/${sanitizedPath}`;
+                
+                res.json({ image_url: imageURL });
             } else {
-              res.status(404).json({ error: "Image not found" });
+                res.status(404).json({ error: "Image not found" });
             }
-          } catch (error) {
+        } catch (error) {
+            console.error("Error fetching poster image:", error);
             res.status(500).json({ error: "Server error" });
-          }
+        }
     }
+    
 
     static async saveProfile(req, res) { // Save user profile bio
         let decodedToken = jwt_decode(req.cookies['refresh-token']) // Decode JWT

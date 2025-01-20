@@ -44,6 +44,12 @@ class Community {
         res.json(details);
     }
 
+    static async fetchCommunityDetailsViaId(req, res) {
+        const communityId = req.params.communityId;
+        const details = await queryDb("SELECT * FROM Communities WHERE id = ?", [communityId]);
+        res.json(details);
+    }
+
     static async fetchCommunities(req, res){
         const limit = 5; // number of communities per page
         const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query

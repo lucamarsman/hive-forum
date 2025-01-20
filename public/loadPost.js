@@ -4,6 +4,7 @@ let morePostsAvailable = true; // Flag to check if there are more posts availabl
 let searchMode = false;  // Flag to check if search mode is active
 let lastSearchQuery = ''; // Store the last search query
 let locationPath = window.location.pathname;
+let communityMode = false;
 
 function debounce(fn, delay) { // Debounce function for scroll event listener
     let timer;
@@ -65,14 +66,13 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
     }
 
     if(locationPath.includes("/communities")){ // Default URL for community
+      communityMode = true;
       url = `/posts/fetch-posts?page=${currentPage}&community=${communityName}`
 
       if(searchMode && searchQuery){
         url = `/posts/api/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage}&community=${communityName}`
       }
     }
-
-    console.log(url)
 
     fetch(url) // Fetch posts from server
         .then(response => response.json()) // Parse response as JSON
@@ -113,18 +113,40 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
                     const postUserImg = document.createElement("img")
                     postUserImg.classList.add("poster-image")
 
-                    fetch(`/user/poster-image/${post.user_id}`)
-                    .then(response => response.json())
-                    .then(data => {
-                      postUserImg.setAttribute("src", data.image_url)
-                    })
-                    
                     const postUser = document.createElement("p") // Create post user element and set its attributes
                     postUser.textContent = post.username
                     postUser.classList.add("poster")
                     postUser.addEventListener("click", function () { // Add event listener to post username element
-                      window.location.href = `view/${post.username}/profile`; // Redirect to user's profile page
+                      window.location.href = `/view/${post.username}/profile`; // Redirect to user's profile page
                     })
+
+                    if(communityMode){
+                      fetch(`/user/poster-image/${post.user_id}`)
+                      .then(response => response.json())
+                      .then(data => {
+                        postUserImg.setAttribute("src", data.image_url)
+                      })
+                    }
+
+                    if(!communityMode){ // If on homepage display community logo and name instead of profile pic/name of poster
+                      if(post.community_id != null){
+                        fetch(`/communities/detailsById/${post.community_id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                          postUserImg.setAttribute("src", data[0].logo_path);
+                          postUser.textContent = `h/${data[0].name}`;
+                          postUser.addEventListener("click", function () { 
+                            window.location.href = `/communities/${data[0].name}`; 
+                          })
+                        })
+                      }else{
+                        postUserImg.setAttribute("src", "public/assets/images/general.svg"); // Default community image for general posts
+                        postUser.textContent = "h/general";
+                        postUser.addEventListener("click", function () { 
+                          window.location.href = `/`; 
+                        })
+                      }
+                    }
 
                     let uploadedMedia = null;
 
@@ -157,8 +179,30 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
                       }
                       postMain.appendChild(uploadedMedia)
                     }
+
+                    const tagBox = document.createElement("div");
+                    tagBox.className = "tag-box"
+
+                    if (post.tags != null) {
+                      post.tags = post.tags.map(tag => {
+                        return tag.replace("&amp;", "&");
+                      });
+                      post.tags.forEach(tag => {
+                        const tagItem = document.createElement("tag-item")
+                        tagItem.className = "tag-item"
+
+                        const tagTitle = document.createElement("p")
+                        tagTitle.className = "tag-title";
+                        tagTitle.innerHTML = tag;
+
+                        tagItem.appendChild(tagTitle);
+                        tagBox.appendChild(tagItem);
+                      })
+                    }
+
                     postMain.appendChild(postContent);
                     postElement.appendChild(postMain); // Append post main and post interact to post element
+                    postElement.appendChild(tagBox);
                     postElement.appendChild(postInteract);
 
                     postsContainer.appendChild(postElement); // Append post element to posts container

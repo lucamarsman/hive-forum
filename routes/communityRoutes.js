@@ -20,6 +20,8 @@ router.post('/new-community', postLimiter, validateToken, upload.single("imageUp
 
 router.get('/details/:communityName', CommunityController.fetchCommunityDetails);
 
+router.get('/detailsById/:communityId', CommunityController.fetchCommunityDetailsViaId);
+
 router.get('/fetch-communities', CommunityController.fetchCommunities);
 
 router.get('/api/search', CommunityController.searchCommunities);

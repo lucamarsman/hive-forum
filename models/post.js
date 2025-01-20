@@ -19,9 +19,9 @@ class Post { // post model
                 const communityId = communityResult[0].id;
 
                 if(req.file){
-                    result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id, community_id) VALUES (?,?,?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid, communityId, post_payload.tags]); // insert post into database with media
+                    result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id, community_id, tags) VALUES (?,?,?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid, communityId, post_payload.tags]); // insert post into database with media
                 }else{
-                    result = await queryDb('INSERT INTO Posts (title, content, user_id, community_id) VALUES (?,?,?,?,?)', [post_payload.title, post_payload.body, uid, communityId, post_payload.tags]); // insert post into database
+                    result = await queryDb('INSERT INTO Posts (title, content, user_id, community_id, tags) VALUES (?,?,?,?,?)', [post_payload.title, post_payload.body, uid, communityId, post_payload.tags]); // insert post into database
                 }
             }else{
                 if(req.file){
@@ -64,6 +64,8 @@ class Post { // post model
                         p.media_path,
                         p.timestamp,
                         p.user_id,
+                        p.community_id,
+                        p.tags,
                         p.likeCount,
                         u.username,   
                         EXISTS(
@@ -104,6 +106,8 @@ class Post { // post model
                     p.media_path,
                     p.timestamp,
                     p.user_id,
+                    p.community_id,
+                    p.tags,
                     p.likeCount,
                     u.username,   
                     EXISTS(
@@ -147,6 +151,8 @@ class Post { // post model
                         p.media_path,
                         p.timestamp,
                         p.user_id,
+                        p.community_id,
+                        p.tags,
                         p.likeCount,
                         u.username 
                     FROM posts p
@@ -173,6 +179,8 @@ class Post { // post model
                     p.media_path,
                     p.timestamp,
                     p.user_id,
+                    p.community_id,
+                    p.tags,
                     p.likeCount,
                     u.username
                 FROM posts p
