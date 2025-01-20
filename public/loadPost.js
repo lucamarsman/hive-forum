@@ -23,6 +23,32 @@ function nearBottomOfPage() { // Function to check if the user has scrolled to t
     return (viewportHeight + scrolledAmount) >= (scrollableHeight - 100);
 }
 
+function timeAgo(timestamp) {
+  const now = new Date();
+  const then = new Date(timestamp);
+  const diff = now - then; // Difference in milliseconds
+
+  // Convert to seconds, minutes, hours, etc.
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const weeks = Math.floor(days / 7);
+  const months = Math.floor(days / 30); // Approximate
+  const years = Math.floor(days / 365); // Approximate
+
+  // Helper to handle singular/plural
+  const pluralize = (value, unit) => `${value} ${unit}${value > 1 ? "s" : ""} ago`;
+
+  if (seconds < 60) return pluralize(seconds, "second");
+  if (minutes < 60) return pluralize(minutes, "minute");
+  if (hours < 24) return pluralize(hours, "hour");
+  if (days < 7) return pluralize(days, "day");
+  if (weeks < 4) return pluralize(weeks, "week");
+  if (months < 12) return pluralize(months, "month");
+  return pluralize(years, "year");
+}
+
 function loadPosts(searchQuery = '') { // Function that loads posts to front page
     if (isLoading || !morePostsAvailable) return; // If the server is currently loading posts or there are no more posts available, return
 
@@ -102,18 +128,20 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
 
                     let uploadedMedia = null;
 
+                    const postTimestamp = document.createElement("p");
+                    postTimestamp.textContent = "• " + timeAgo(post.timestamp);
+
                     const posterContent = document.createElement("div")
                     posterContent.classList.add("poster-content")
                     posterContent.appendChild(postUserImg)
                     posterContent.appendChild(postUser)
+                    posterContent.appendChild(postTimestamp)
 
                     const postContent = document.createElement("p"); // Create post content element and set its attributes
                     postContent.textContent = post.content;
-                    const postTimestamp = document.createElement("p");
-                    postTimestamp.textContent = post.timestamp;
 
-                    postHeader.appendChild(postTitle) // Append post title and post user to post header element
                     postHeader.appendChild(posterContent)
+                    postHeader.appendChild(postTitle) // Append post title and post user to post header element
                     
                     postMain.appendChild(postHeader); // Append post header, post content, and post timestamp to post main element
                     if(post.media_path != null){
@@ -130,7 +158,6 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
                       postMain.appendChild(uploadedMedia)
                     }
                     postMain.appendChild(postContent);
-                    postHeader.appendChild(postTimestamp);
                     postElement.appendChild(postMain); // Append post main and post interact to post element
                     postElement.appendChild(postInteract);
 
