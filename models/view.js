@@ -103,7 +103,6 @@ class View { // view model
         }
     }
 
-    //TODO: Get corresponding media upload url from backend and include in response
     static async viewPost(req, res) { // view a post
         const postId = req.params.postId; // get post ID from request parameters
         const post = await queryDb('SELECT * FROM Posts WHERE post_id = ?', [postId]); // fetch post from database using post ID
@@ -125,11 +124,10 @@ class View { // view model
             res.json({
                 title: post[0].title,
                 mediaUrl: post[0].media_path,
-                body: post[0].content.replace(/\n/g, '<br>'),
+                body: post[0].content,
                 timestamp: post[0].timestamp,
                 comments: comments,
                 isOwner: isOwner
-
             })
         } else { // if post does not exist
             res.status(404).json({ success: false, message: 'Post not found' });

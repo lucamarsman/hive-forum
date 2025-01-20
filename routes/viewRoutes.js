@@ -28,7 +28,7 @@ router.get('/reset', ViewController.renderReset); // render reset page
 
 router.get('/reset/:reset_link', ViewController.renderResetLink); // render reset link page
 
-router.get('/new-post', validateToken, ViewController.renderPostSubmit); // render post submit page
+router.get('/home/new-post', validateToken, ViewController.renderPostSubmit); // render post submit page
 
 router.get("/profile", validateToken, ViewController.viewProfile); // View Your Profile
 
