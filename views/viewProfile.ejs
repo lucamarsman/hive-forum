@@ -2,21 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title> Homepage </title>
+  <title> View Profile </title>
   <link rel="stylesheet" type="text/css" href="/public/assets/profileview-a.css" title="style" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
-<div id = "main">
-  <header id = "main-nav">
-    <a onclick="window.location.href='/'" id="logo"><img src="/public/assets/images/logo.png"></a>
-    <div id="button-container">
-      <button id = "btn1" onclick="window.location.href='/register'">Sign Up</button>
-      <button id = "btn2" onclick="window.location.href='/login'">Log in</button>
-    </div>
-  </header>
-</div>
+  <div class="wrapper">
+    <header id="main-nav">
+      <div id="brand">
+        <img src="/public/assets/images/hive-logo.svg" id="logo">
+        <img src="/public/assets/images/Hive.svg" id="brand-text">
+      </div>
+      <div class="search-nav">
+        <form action="" id="searchForm" method="POST">
+          <input type="text" id="search-bar" placeholder="Search Hive" name="search_val">
+          <button type="submit" id="search-button" name="action" value="search">Go</button>
+        </form>
+      </div>
+      <div id="button-container">
+        <button id="btn2" onclick="window.location.href='/logout'">Log Out</button>
+      </div>
+    </header>
 
 <div id="login-pop">
   <div id = "profile-top">
@@ -25,11 +32,13 @@
       <img id ="profile-picture">
       <p id="date-joined">Member since: <%= dateJoined %></p>
     </div>
+    
 
+    
 
   </div>
 
-  <textarea id ="bio" readonly><%= bioData %></textarea>
+  <textarea id ="bio" readonly></textarea>
 
   <div id="buttonContainer">
     <button id="postHistory">Post History</button>
@@ -40,46 +49,38 @@
 
   </div>
 
-
   <script src="/public/loadPostData.js"></script>
 
   <script>
-
-    fetch(`/profile/${username}/profile-image`)
-    .then(response => response.json())
-    .then(imagePath => {
-        if(imagePath == ""){
-        document.getElementById("profile-picture").src = "public/assets/images/default-profile.png";
-        }else{
-        document.getElementById("profile-picture").src = "/" + imagePath[0].image_path;
+    fetch(`/profile/<%= username %>/profile-image`)
+      .then(response => response.json())
+      .then(imagePath => {
+        if (imagePath == "") {
+          document.getElementById("profile-picture").src = "public/assets/images/default-profile.png";
+        } else {
+          document.getElementById("profile-picture").src = "/" + imagePath[0].image_path;
         }
-     })
+      });
 
-  let postHistoryBtn = document.getElementById("postHistory");
-  let commentHistoryBtn = document.getElementById("commentHistory");
+    let postHistoryBtn = document.getElementById("postHistory");
+    let commentHistoryBtn = document.getElementById("commentHistory");
 
-  postHistoryBtn.addEventListener("click", () => {
-    postHistoryBtn.classList.remove("active");
-    commentHistoryBtn.classList.remove("active");
+    postHistoryBtn.addEventListener("click", () => {
+      postHistoryBtn.classList.remove("active");
+      commentHistoryBtn.classList.remove("active");
 
-    postHistoryBtn.classList.add("active");
-  })
+      postHistoryBtn.classList.add("active");
+    });
 
-  commentHistoryBtn.addEventListener("click", () => {
-    postHistoryBtn.classList.remove("active");
-    commentHistoryBtn.classList.remove("active");
+    commentHistoryBtn.addEventListener("click", () => {
+      postHistoryBtn.classList.remove("active");
+      commentHistoryBtn.classList.remove("active");
 
-    commentHistoryBtn.classList.add("active");
-  })
-
+      commentHistoryBtn.classList.add("active");
+    });
   </script>
 
 </div>
-
-<footer>
-  <p>&copy; 2024 ConvoSphere. All rights reserved.</p>
-</footer>
-
 
 </body>
 </html>

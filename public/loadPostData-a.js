@@ -15,7 +15,11 @@ function debounce(fn, delay) { // Debounce function for scroll event listener
 }
 
 function nearBottomOfPage() { // Function to check if the user has scrolled to the bottom of page
-    return (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500;
+  const scrollableHeight = document.documentElement.scrollHeight;
+  const viewportHeight = window.innerHeight;
+  const scrolledAmount = window.scrollY;
+
+  return (viewportHeight + scrolledAmount) >= (scrollableHeight - 100);
 }
 
 function loadPosts(url) { // Function that loads posts to front page

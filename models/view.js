@@ -65,7 +65,7 @@ class View { // view model
     
                 // Check if dateResult and bioResult have data before attempting to render
                 if (dateResult.length > 0 && bioResult.length > 0) {
-                    return res.render('viewProfile-a.ejs', { // render profile page with username, bio, and registration date
+                    return res.render('viewProfile.ejs', { // render profile page with username, bio, and registration date
                         username: username,
                         dateJoined: dateResult[0].registration_date,
                         bioData: bioResult[0].bio  
