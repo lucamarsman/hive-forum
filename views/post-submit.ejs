@@ -18,7 +18,6 @@
       <form action="" id="searchForm" method="POST">
         <input type="text" id="search-bar" placeholder="Search Hive" name="search_val">
         <button type="submit" id="search-button" name="action" value="search">Go</button>
-        <button id="create-post" type="button" name="action" value="post" onclick="window.location.href='/new-post'">New Post</button>
       </form>
     </div>
     <div id="button-container">
@@ -39,6 +38,24 @@
       <img id="uploadedImg">
       <video id="uploadedVideo" controls></video>
       <br>
+      <div id="tag-container">
+        <label for="tags">Select Tags:</label>
+        <select id="tags" name="tags" multiple>
+          <option value="Science" class="tag-option">Science</option>
+          <option value="Sports" class="tag-option">Sports</option>
+          <option value="Gaming" class="tag-option">Gaming</option>
+          <option value="Pop Culture" class="tag-option">Pop Culture</option>
+          <option value="Movies & TV" class="tag-option">Movies & TV</option>
+          <option value="Arts" class="tag-option">Arts</option>
+          <option value="Technology" class="tag-option">Technology</option>
+          <option value="Business" class="tag-option">Business</option>
+          <option value="Fashion & Beauty" class="tag-option">Fashion & Beauty</option>
+          <option value="Music" class="tag-option">Music</option>
+          <option value="Q&As" class="tag-option">Q&As</option>
+          <option value="Food & Drinks" class="tag-option">Food & Drink</option>
+        </select>
+      </div>
+      <br><br>
         <button type = 'submit' id = "post-push" class = 'posty'>Post</button>
         <div id="inline-toast"></div>
     </form>
@@ -50,6 +67,57 @@
 </div>
 
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const selectElement = document.getElementById("tags"); // The <select> element
+  const selectTagContainer = document.createElement("div");
+  selectTagContainer.id = "selected-tags";
+  document.getElementById("tag-container").appendChild(selectTagContainer);
+
+  selectElement.addEventListener("change", () => {
+    const selectedValue = selectElement.value; // Get the selected value
+
+    // Check if the tag is already in the container
+    const existingTags = document.querySelectorAll("#selected-tags .span-item p");
+    let isAlreadySelected = false;
+
+    existingTags.forEach(tag => {
+      if (tag.innerHTML.trim().toLowerCase() === selectedValue.trim().toLowerCase()) {
+        isAlreadySelected = true;
+      }
+    });
+
+    // If already selected, do nothing
+    if (isAlreadySelected) {
+      console.log(`Tag "${selectedValue}" is already selected.`);
+      return;
+    }
+
+    // Create the new tag element
+    const addedTagElement = document.createElement("span");
+    addedTagElement.className = "span-item";
+
+    const tagTitle = document.createElement("p");
+    tagTitle.innerHTML = selectedValue;
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button"; // Prevent form submission
+    deleteBtn.className = "span-delete-btn";
+    deleteBtn.innerHTML = "X";
+
+    // Add delete functionality
+    deleteBtn.addEventListener("click", () => {
+      const parentSpan = deleteBtn.parentElement;
+      if (parentSpan) {
+        parentSpan.remove();
+      }
+    });
+
+    addedTagElement.appendChild(tagTitle);
+    addedTagElement.appendChild(deleteBtn);
+    selectTagContainer.appendChild(addedTagElement);
+  });
+
+  
   const textarea = document.getElementById('post-body'); // The textarea element
 
   textarea.addEventListener('input', function () { // Input event listener that resizes the text vertically based on the content
@@ -82,6 +150,15 @@
   const form = event.target;
   const formData = new FormData(form);
 
+  // Collect tags from the selected-tags container
+  const tags = [];
+  document.querySelectorAll('#selected-tags .span-item p').forEach(tagElement => {
+    tags.push(tagElement.innerHTML.trim());
+  });
+
+  // Add tags as JSON to the FormData
+  formData.append('tags', JSON.stringify(tags));
+
   fetch(form.action, {
       method: 'POST',
       body: formData
@@ -105,6 +182,7 @@
       console.error('Error:', error);
   });
 });
+})
 
 </script>
 

@@ -6,7 +6,8 @@ class Post { // post model
         if(res.authenticated){ // if user is authenticated
             const post_payload = { // create post payload
                 "title": req.body.post_title, // get post title from request body
-                "body": req.body.post_body // get post body from request body
+                "body": req.body.post_body, // get post body from request body
+                "tags" : req.body.tags[1] // get post tags from request body
             }
 
             let decodedToken = jwt_decode(req.cookies['refresh-token']) // decode JWT token
@@ -18,15 +19,15 @@ class Post { // post model
                 const communityId = communityResult[0].id;
 
                 if(req.file){
-                    result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id, community_id) VALUES (?,?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid, communityId]); // insert post into database with media
+                    result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id, community_id) VALUES (?,?,?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid, communityId, post_payload.tags]); // insert post into database with media
                 }else{
-                    result = await queryDb('INSERT INTO Posts (title, content, user_id, community_id) VALUES (?,?,?,?)', [post_payload.title, post_payload.body, uid, communityId]); // insert post into database
+                    result = await queryDb('INSERT INTO Posts (title, content, user_id, community_id) VALUES (?,?,?,?,?)', [post_payload.title, post_payload.body, uid, communityId, post_payload.tags]); // insert post into database
                 }
             }else{
                 if(req.file){
-                    result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id) VALUES (?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid]); // insert post into database with media
+                    result = await queryDb('INSERT INTO Posts (title, content, media_path, user_id, tags) VALUES (?,?,?,?,?)', [post_payload.title, post_payload.body, req.file.path, uid, post_payload.tags]); // insert post into database with media
                 }else{
-                    result = await queryDb('INSERT INTO Posts (title, content, user_id) VALUES (?,?,?)', [post_payload.title, post_payload.body, uid]); // insert post into database
+                    result = await queryDb('INSERT INTO Posts (title, content, user_id, tags) VALUES (?,?,?,?)', [post_payload.title, post_payload.body, uid, post_payload.tags]); // insert post into database
                 }
             }
 

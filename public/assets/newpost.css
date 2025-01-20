@@ -398,3 +398,56 @@ hr {
     height:auto;
 }
 
+#tag-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap:1em;
+}
+
+#tags{
+    height:10em;
+}
+
+#selected-tags{
+    display:flex;
+    width:100%;
+    overflow-x:auto;
+    gap:10px;
+    flex-grow: 0;
+}
+
+.span-item{
+    display:flex;
+    background-color: #F6F8F9;
+    align-items: center;
+    padding:.25em .25em;
+    border-radius: 16px;
+    flex-grow:0;
+    flex-shrink: 0;
+}
+
+.span-delete-btn{
+    height:50%;
+    position:relative;
+    margin-bottom:auto;
+    font-size:.6em;
+    background: none;
+    border:none;
+    height:25%;
+}
+
+.span-delete-btn:hover {
+    color:red;
+    cursor: pointer;
+}
+
+.span-item > p {
+    margin:0;
+}
+
+.span-item > p, .span-item > button{
+    padding:5px;
+}
+
