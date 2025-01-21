@@ -224,24 +224,69 @@ class Post { // post model
         }
     }
 
-    static async searchPost(req, res){ // Search posts by title or content
-        if(res.authenticated){ // if user is authenticated
-            if(req.query.community){
-                let decodedToken = jwt_decode(req.cookies['refresh-token']); // decode JWT token
-                const userId = decodedToken.user.userid; // get user ID from decoded JWT token
-                const searchVal = `%${req.query.query}%`; // get search query from request query
-                const limit = 5; // number of posts per page
-                const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
-                const offset = (page - 1) * limit; // calculate offset
-                const communityResult = await queryDb(`SELECT id FROM Communities WHERE name = ?`, [req.query.community]);
-                const communityId = communityResult[0].id;
-                console.log(communityId)
-                
-                // Fetch posts from db via search query, limit, and offset. This version includes the like and save status of each post for the authenticated user
-                const posts = await queryDb(`
-                    SELECT 
+    static async searchPost(req, res) {
+        try {
+            const searchVal = req.query.query ? `%${req.query.query}%` : `%`; // Default to wildcard if no query
+            let tag = req.query.tag; // Extract the tag parameter
+            const limit = 5; // Number of posts per page
+            const page = req.query.page ? parseInt(req.query.page) : 1; // Get page number or default to 1
+            const offset = (page - 1) * limit; // Calculate offset
+            
+            if(tag.includes("&")){
+                tag = tag.replace("&", "&amp;");
+            }
+
+            console.log(tag)
+
+            // If the user is authenticated
+            if (res.authenticated) {
+                const decodedToken = jwt_decode(req.cookies['refresh-token']); // Decode JWT token
+                const userId = decodedToken.user.userid; // Get user ID from the token
+    
+                // Check if community filter is present
+                if (req.query.community) {
+                    const communityResult = await queryDb(
+                        `SELECT id FROM Communities WHERE name = ?`,
+                        [req.query.community]
+                    );
+                    const communityId = communityResult[0]?.id;
+                    if (!communityId) {
+                        return res.status(404).json({ error: 'Community not found' });
+                    }
+    
+                    const posts = await queryDb(
+                        `SELECT 
+                            Posts.*,
+                            u.username,
+                            EXISTS (
+                                SELECT 1 
+                                FROM likes 
+                                WHERE likes.post_id = Posts.post_id AND likes.user_id = ?
+                            ) AS liked,
+                            EXISTS (
+                                SELECT 1 
+                                FROM saves 
+                                WHERE saves.post_id = Posts.post_id AND saves.user_id = ?
+                            ) AS saved
+                        FROM Posts
+                        JOIN Users u ON Posts.user_id = u.user_id
+                        WHERE (content LIKE ? OR title LIKE ? OR u.username LIKE ?)
+                        AND JSON_CONTAINS(tags, JSON_QUOTE(?), '$')
+                        AND community_id = ?
+                        ORDER BY post_id DESC
+                        LIMIT ? OFFSET ?`,
+                        [userId, userId, searchVal, searchVal, searchVal, tag, communityId, limit, offset]
+                    );
+    
+                    res.json(posts);
+                    return;
+                }
+    
+                // If no community filter, query by tag and general search query
+                const posts = await queryDb(
+                    `SELECT 
                         Posts.*,
-                        u.username, 
+                        u.username,
                         EXISTS (
                             SELECT 1 
                             FROM likes 
@@ -252,68 +297,40 @@ class Post { // post model
                             FROM saves 
                             WHERE saves.post_id = Posts.post_id AND saves.user_id = ?
                         ) AS saved
-                    FROM Posts 
+                    FROM Posts
                     JOIN Users u ON Posts.user_id = u.user_id
                     WHERE (content LIKE ? OR title LIKE ? OR u.username LIKE ?)
-                    AND community_id = ?
-                    ORDER BY post_id DESC 
-                    LIMIT ? OFFSET ?`, 
-                    [userId, userId, searchVal, searchVal, searchVal, communityId, limit, offset]
+                    AND JSON_CONTAINS(tags, JSON_QUOTE(?), '$')
+                    ORDER BY post_id DESC
+                    LIMIT ? OFFSET ?`,
+                    [userId, userId, searchVal, searchVal, searchVal, tag, limit, offset]
                 );
-                res.json(posts); // return posts as JSON
+    
+                res.json(posts);
                 return;
             }
-
-            let decodedToken = jwt_decode(req.cookies['refresh-token']); // decode JWT token
-            const userId = decodedToken.user.userid; // get user ID from decoded JWT token
-            const searchVal = `%${req.query.query}%`; // get search query from request query
-            const limit = 5; // number of posts per page
-            const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
-            const offset = (page - 1) * limit; // calculate offset
-            
-            // Fetch posts from db via search query, limit, and offset. This version includes the like and save status of each post for the authenticated user
-            const posts = await queryDb(`
-                SELECT 
-                    Posts.*,
-                    u.username, 
-                    EXISTS (
-                        SELECT 1 
-                        FROM likes 
-                        WHERE likes.post_id = Posts.post_id AND likes.user_id = ?
-                    ) AS liked,
-                    EXISTS (
-                        SELECT 1 
-                        FROM saves 
-                        WHERE saves.post_id = Posts.post_id AND saves.user_id = ?
-                    ) AS saved
-                FROM Posts 
-                JOIN Users u ON Posts.user_id = u.user_id
-                WHERE content LIKE ? OR title LIKE ? OR u.username LIKE ?
-                ORDER BY post_id DESC 
-                LIMIT ? OFFSET ?`, 
-                [userId, userId, searchVal, searchVal, searchVal, limit, offset]
-            );
-            res.json(posts); // return posts as JSON
-        }else{ // if user is not authenticated
-            const searchVal = `%${req.query.query}%`; // get search query from request query
-            const limit = 5; // number of posts per page
-            const page = req.query.page ? parseInt(req.query.page) : 1; // get page number from request query
-            const offset = (page - 1) * limit; // calculate offset
     
-            const posts = await queryDb(`
-                SELECT 
+            // If the user is not authenticated
+            const posts = await queryDb(
+                `SELECT 
                     Posts.*,
                     u.username
-                FROM Posts 
+                FROM Posts
                 JOIN Users u ON Posts.user_id = u.user_id
-                WHERE content LIKE ? OR title LIKE ? OR u.username LIKE ?
-                ORDER BY post_id DESC 
-                LIMIT ? OFFSET ?`, 
-                [searchVal, searchVal, searchVal, limit, offset]
+                WHERE (content LIKE ? OR title LIKE ? OR u.username LIKE ?)
+                AND JSON_CONTAINS(tags, JSON_QUOTE(?), '$')
+                ORDER BY post_id DESC
+                LIMIT ? OFFSET ?`,
+                [searchVal, searchVal, searchVal, tag, limit, offset]
             );
-            res.json(posts); // return posts as JSON
+    
+            res.json(posts);
+        } catch (error) {
+            console.error('Error in searchPost:', error);
+            res.status(500).json({ error: 'Server error' });
         }
     }
+    
 
 }
 

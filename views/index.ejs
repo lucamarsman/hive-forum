@@ -87,6 +87,31 @@
 
   <script src="/public/loadPost.js"></script>
   <script>
+    let topicList = [];
+    document.addEventListener("DOMContentLoaded", () => { 
+      const topicLinks = document.querySelectorAll("#dropdown-menu-topics a");
+
+      topicLinks.forEach(link => {
+        topicList.push(link.textContent.trim());
+          link.addEventListener("click", (event) => {
+            event.preventDefault(); // Prevent default anchor behavior
+              const topic = link.textContent.trim(); // Get the topic name
+              console.log(`Loading posts for topic: ${topic}`);
+
+              // Update states for the new topic
+              searchMode = true;
+              lastSearchQuery = topic;
+              currentPage = 1; // Reset to first page
+              morePostsAvailable = true;
+
+              const postsContainer = document.getElementById("postsContainer");
+              postsContainer.innerHTML = ""; // Clear current posts
+
+              loadPosts(topic); // Fetch posts for the selected topic
+          });
+      });
+  });
+
     // Check viewport size on load and on resize
     const phoneWidthQuery = window.matchMedia("(max-width: 1280px)");
 

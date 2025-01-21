@@ -60,19 +60,25 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
     loadingIndicator.id = "loading-indicator";
     postsContainer.appendChild(loadingIndicator);
 
-    let url = `/posts/fetch-posts?page=${currentPage}`; // Default URL
-    if (searchMode && searchQuery) { // If search mode is active and there is a search query
-        url = `/posts/api/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage}`; // Set URL to search endpoint
+    console.log(topicList.includes(searchQuery))
+    let url = `/posts/fetch-posts?page=${currentPage}`;
+    if (searchMode && searchQuery) {
+        url = `/posts/api/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage}`;
+        if (topicList.includes(searchQuery)) {
+            url = `/posts/api/search?tag=${encodeURIComponent(searchQuery)}&page=${currentPage}`;
+        }
     }
-
-    if(locationPath.includes("/communities")){ // Default URL for community
-      communityMode = true;
-      url = `/posts/fetch-posts?page=${currentPage}&community=${communityName}`
-
-      if(searchMode && searchQuery){
-        url = `/posts/api/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage}&community=${communityName}`
-      }
+    if (locationPath.includes("/communities")) {
+        communityMode = true;
+        url = `/posts/fetch-posts?page=${currentPage}&community=${communityName}`;
+        if (searchMode && searchQuery) {
+            url = `/posts/api/search?query=${encodeURIComponent(searchQuery)}&page=${currentPage}&community=${communityName}`;
+            if (topicList.includes(searchQuery)) {
+              url = `/posts/api/search?tag=${encodeURIComponent(searchQuery)}&page=${currentPage}&community=${communityName}`;
+          }
+        }
     }
+    console.log(`Fetching posts from: ${url}`);
 
     fetch(url) // Fetch posts from server
         .then(response => response.json()) // Parse response as JSON
