@@ -187,7 +187,14 @@ class Community {
         }
     }
     
-
+    static async getLogo(req, res) {
+        try{
+            const results = await queryDb(`SELECT logo_path FROM Communities WHERE name = ?`, [req.params.communityName]);
+            res.status(200).json(results);
+        }catch(error){
+            res.status(500).json({msg: "Something went terribly wrong: " + error});
+        }
+    }
 
 }
 

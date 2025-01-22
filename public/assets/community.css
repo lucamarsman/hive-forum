@@ -988,3 +988,23 @@ p{
 }
 
 
+.recent-item{
+    display:flex;
+    border-radius:16px;
+    align-items: center;
+    gap:10%;
+    padding:5%;
+}
+
+
+
+.recent-item:hover{
+    display:flex;
+    background-color: #F6F8F9;
+    cursor: pointer;
+}
+
+.recent-logo{
+    width:20%;
+    height:auto;
+}

@@ -36,5 +36,7 @@ router.get('/stats/:communityName', validateToken, CommunityController.getCommun
 
 router.get('/getPopular', CommunityController.getPopular);
 
+router.get('/getLogo/:communityName', CommunityController.getLogo);
+
 
 module.exports = router; // export router

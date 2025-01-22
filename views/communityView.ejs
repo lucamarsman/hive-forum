@@ -34,9 +34,7 @@
         <hr>
         <button class="content-start-button-1"><span class="span-start">Recent<img src="/public/assets/images/dropdown-arrow-up.svg" class="dropdown-arrow-1"></span></button>
           <div id="dropdown-menu-recent" class="visible">
-            <a href="#">Option 1</a>
-            <a href="#">Option 2</a>
-            <a href="#">Option 3</a>
+  
           </div>
         <hr>
         <button class="content-start-button-2"><span class="span-start">Topics<img src="/public/assets/images/dropdown-arrow-up.svg" class="dropdown-arrow-2"></span></button>
@@ -229,6 +227,51 @@
     })
 
     document.addEventListener("DOMContentLoaded", () => {
+      const communityName = window.location.pathname.split('/')[2]; // Extract the community name
+      let recentCommunities = JSON.parse(localStorage.getItem('recentCommunities')) || []; // Get the existing list
+      const recentDropdown = document.getElementById("dropdown-menu-recent");
+
+      if(recentCommunities.length > 0){
+        recentCommunities.forEach((item, index) => {
+          const recentItem = document.createElement("span");
+          recentItem.className = "recent-item";
+          recentItem.id = `recent-item-${index}`;
+
+          const communityLogo = document.createElement("img");
+          communityLogo.className = "recent-logo";
+          communityLogo.id = `recent-logo-${index}`;
+
+          const recentTitle = document.createElement("p");
+          recentTitle.className = "recent-title";
+          recentTitle.id = `recent-title-${index}`;
+          recentTitle.innerHTML = `h/${item}`;
+
+          fetch(`/communities/getLogo/${item}`)
+            .then(response => response.json())
+            .then(data => {
+              communityLogo.src = data[0].logo_path.includes("default") ? data[0].logo_path : '/' + data[0].logo_path;
+            })
+
+          recentItem.addEventListener("click", () => {
+            window.location.href = `/communities/${item}`
+          })
+
+          recentItem.appendChild(communityLogo);
+          recentItem.appendChild(recentTitle);
+          recentDropdown.appendChild(recentItem);
+        })
+      }
+
+      if (communityName) {
+          recentCommunities = recentCommunities.filter(name => name !== communityName); // Remove duplicates
+          recentCommunities.unshift(communityName); // Add the current community to the top
+          const maxCommunities = 5; // Limit to 5 items
+          if (recentCommunities.length > maxCommunities) {
+              recentCommunities.pop(); // Remove the oldest item
+          }
+          localStorage.setItem('recentCommunities', JSON.stringify(recentCommunities)); // Save updated list
+      }
+
       const btn1 = document.getElementById("btn1");
       const btn2 = document.getElementById("btn2");
 
