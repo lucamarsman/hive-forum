@@ -57,7 +57,6 @@ Hive Forum is a **full-stack community-driven discussion platform** where users 
 
 - **Community Moderation** – Ability to edit/delete communities.
 - **Advanced Post Filtering** – Sort by **new, top, and hot** posts.
-- **User Profiles** – Customizable profile pages with **avatars and bios**.
 - **Improved Mobile Responsiveness** – _(Some pages are not fully optimized yet)._
 - **Deployment** – _Currently only available locally; hosting is planned._
 - **CSRF protection** and secure **cookie handling**.
