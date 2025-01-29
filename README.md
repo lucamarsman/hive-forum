@@ -47,20 +47,22 @@ Hive Forum is a **full-stack community-driven discussion platform** where users 
 - **Rate Limiting** – To prevent API abuse.
 
 ### 🎨 Frontend
-- **HTML, CSS, JavaScript (Vanilla)** – No frontend framework yet.
+- **HTML, CSS, JavaScript (Vanilla)** – No frontend framework as of yet.
 - **AJAX Fetch API** – Handles dynamic content loading.
-- **Custom Styling & Responsive Design** – _(Some pages still need improvements)._
+- **Custom Styling & Responsive Design** – _(Some pages still need a lot of work)._
 
 ---
 
 ## ⚠️ Work in Progress 🚧
 
-- **Community Moderation** – Ability to edit/delete communities.
+- **Community Moderation** – Ability to edit/delete communities and manage members/comments/posts.
 - **Advanced Post Filtering** – Sort by **new, top, and hot** posts.
 - **Improved Mobile Responsiveness** – _(Some pages are not fully optimized yet)._
 - **Deployment** – _Currently only available locally; hosting is planned._
 - **CSRF protection** and secure **cookie handling**.
 - **Google OAuth** integration for easy sign-in.
+- **S3 Bucket*** integration for scalable user upload storage (profile images/post media)
+- **Unit/Integration Testing & Advanced Error Handling**
 
 ---
 
