@@ -212,6 +212,7 @@ function loadPosts(searchQuery = '') { // Function that loads posts to front pag
                     postElement.appendChild(postInteract);
 
                     postsContainer.appendChild(postElement); // Append post element to posts container
+                    postsContainer.appendChild(document.createElement("hr"))
 
                 });
                 currentPage++; // Increment current page
