@@ -33,7 +33,8 @@ function loadCommunity(){
     .then(data => {
         const unpackedJson = data[0];
         const communityName = unpackedJson.name;
-        const communityDesc = unpackedJson.description;
+        const communityDesc = unpackedJson.description.replace(/\n/g, "<br>");
+        console.log("community dec: " + unpackedJson.description)
         const createdAt = unpackedJson.created_at;
         const logoPath = unpackedJson.logo_path;
 

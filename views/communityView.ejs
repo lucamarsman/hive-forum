@@ -72,6 +72,17 @@
       </div>
 
       <div id="postsContainer">
+        <div id="filter-container">
+          <span id="filter-span">New<img src="/public/assets/images/dropdown-arrow-up.svg" class="dropdown-arrow-sort"></span>
+          <div id="dropdown-menu-filter" class="hidden">
+            <p id="filter-header">Sort By</p>
+            <div id="filter-options">
+              <a>Top</a> 
+              <a>New</a>
+              <a>Hot</a>   
+            </div>
+          </div>
+        </div>
         <hr>
       </div>
 
@@ -123,7 +134,7 @@
 
               loadPosts(topic); // Fetch posts for the selected topic
 
-              
+
           });
       });
   });
@@ -312,6 +323,24 @@
               console.error("Error checking auth status:", error);
           });
     });
+
+    const filterButton = document.getElementById("filter-span");
+    filterButton.addEventListener("click", () => {
+      const filterMenu = document.getElementById("dropdown-menu-filter");
+      if(filterButton.classList.contains('active')){
+        filterButton.classList.remove('active');
+      }else{
+        filterButton.classList.add('active');
+      }
+
+      if (filterMenu.classList.contains('visible')) {
+            filterMenu.classList.remove('visible');
+            filterMenu.classList.add('hidden');
+        } else {
+            filterMenu.classList.remove('hidden');
+            filterMenu.classList.add('visible');
+        }
+    })
 
 
   </script>

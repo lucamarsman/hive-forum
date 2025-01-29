@@ -52,7 +52,7 @@ body {
     background-color: white;
     color: white;
     position: fixed;
-    z-index: 10;
+    z-index: 9999;
     width:100vw;
     padding:2%;
     box-sizing: border-box;
@@ -138,7 +138,6 @@ hr{
     border-radius:16px;
     display:flex;
     flex-direction: column;
-    align-items: center;
     flex:1;
     min-width:60%;
     grid-area: posts-container;
@@ -317,6 +316,8 @@ html, body {
     min-width:200px;
     position:fixed;
     left:0;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #c0c0c0 transparent; /* Thumb and track color */
 }
 
 #content-end{
@@ -333,6 +334,8 @@ html, body {
     padding-left:30px;
     padding-right:30px;
     overflow-y: scroll;
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #c0c0c0 transparent; /* Thumb and track color */
 }
 
 hr {
@@ -1008,3 +1011,69 @@ p{
     max-height: 10rem; /* Restrict height */
     line-height: 1.4;
 }
+
+#dropdown-menu-filter{
+    position: absolute;
+    z-index: 9998;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+    padding:.5rem;
+    border-radius:12px;
+    gap:.5rem;
+    max-height: 0; 
+    margin-top:.75rem;
+}
+
+#dropdown-menu-filter.visible {
+    max-height: 100%;
+}
+
+#filter-container{
+    width:12%;
+}
+
+#filter-span{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    border-radius:16px;
+    padding:.4rem;
+}
+
+#filter-span:hover{
+    cursor: pointer;
+    background-color:#E5EBEE;
+}
+
+#filter-span.active{
+    background-color:#E5EBEE;
+}
+
+#filter-span:hover{
+    cursor: pointer;
+}
+
+.dropdown-arrow-sort {
+    width:2rem;
+    height:auto;
+    transform: rotate(180deg); 
+}
+
+#filter-options{
+    display:flex;
+    flex-direction: column;
+    gap:.25rem;
+}
+
+#filter-options > a:hover{
+    cursor:pointer;
+    background-color:#F6F8F9;
+}
+
+#filter-header{
+    margin-bottom:.5rem;
+    font-weight: bold;
+}
+
+
