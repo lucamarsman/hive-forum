@@ -96,6 +96,43 @@ EMAIL_REDIRECT_URI=https://developers.google.com/oauthplayground
 
 ---
 
+## 📧 Configuring Nodemailer for Email Services
+
+Hive Forum uses **Nodemailer with OAuth2** for sending **password reset links and email confirmations**.
+
+### 🛠️ Setting Up OAuth2 with Google
+To configure Nodemailer with **Google OAuth2**, follow these steps:
+
+1. **Go to [Google Cloud Console](https://console.cloud.google.com/)** and create a new project.
+2. **Enable the Gmail API** for the project.
+3. **Navigate to OAuth Consent Screen** and configure your app:
+   - Select **"External"** if you plan to allow multiple users.
+   - Fill in the required details and **add your email** for verification.
+4. **Create OAuth 2.0 Credentials**:
+   - Go to **APIs & Services > Credentials**.
+   - Click **Create Credentials > OAuth 2.0 Client ID**.
+   - Set the **Authorized redirect URI** to:  
+     `https://developers.google.com/oauthplayground`
+5. **Generate a Refresh Token**:
+   - Visit [OAuth Playground](https://developers.google.com/oauthplayground).
+   - Select **Gmail API v1** and request **authorization**.
+   - Exchange the authorization code for a **refresh token**.
+
+### 📜 Update the `.env` File
+Once you have the credentials, **update your `.env` file**:
+
+```ini
+# 🔹 Nodemailer (OAuth2 for Gmail)
+EMAIL_SERVICE=gmail
+EMAIL_USER=your-email@gmail.com
+EMAIL_CLIENT_ID=your-google-api-client-id
+EMAIL_CLIENT_SECRET=your-google-api-secret
+EMAIL_REFRESH_TOKEN=your-oauth-refresh-token
+EMAIL_REDIRECT_URI=https://developers.google.com/oauthplayground
+```
+
+---
+
 ## 📊 Database Schema Overview 
 
 **To manually set up the database, refer to the /database/schema.sql file for table creation queries.**
