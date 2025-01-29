@@ -75,23 +75,21 @@ Inside the **root directory**, create a file named `.env` and add the following:
 
 ```ini
 # 🔹 Database Configuration
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_database_password
+db_password=your_database_password
 DB_NAME=forumdb
 
 # 🔹 JWT Authentication
-TOKEN_SECRET=your_jwt_secret
-TOKEN_REFRESH_SECRET=your_refresh_token_secret
-TOKEN_RESET_SECRET=your_password_reset_secret
+token=your_jwt_secret
+token_refresh=your_refresh_token_secret
+token_reset=your_password_reset_secret
 
 # 🔹 Nodemailer (OAuth2 for Gmail)
-EMAIL_SERVICE=gmail
-EMAIL_USER=your-email@gmail.com
-EMAIL_CLIENT_ID=your-google-api-client-id
-EMAIL_CLIENT_SECRET=your-google-api-secret
-EMAIL_REFRESH_TOKEN=your-oauth-refresh-token
-EMAIL_REDIRECT_URI=https://developers.google.com/oauthplayground
+nodemaileruser=your-email@gmail.com
+nodemailerpassword=your-email-password
+googleapiclient=your-google-api-client-id
+googleapisecret=your-google-api-secret
+oauthrefreshtoken=your-oauth-refresh-token
+redirecturi=https://developers.google.com/oauthplayground
 
 ```
 
@@ -124,12 +122,12 @@ Once you have the credentials, **update your `.env` file**:
 
 ```ini
 # 🔹 Nodemailer (OAuth2 for Gmail)
-EMAIL_SERVICE=gmail
-EMAIL_USER=your-email@gmail.com
-EMAIL_CLIENT_ID=your-google-api-client-id
-EMAIL_CLIENT_SECRET=your-google-api-secret
-EMAIL_REFRESH_TOKEN=your-oauth-refresh-token
-EMAIL_REDIRECT_URI=https://developers.google.com/oauthplayground
+nodemaileruser=your-email@gmail.com
+nodemailerpassword=your-email-password
+googleapiclient=your-google-api-client-id
+googleapisecret=your-google-api-secret
+oauthrefreshtoken=your-oauth-refresh-token
+redirecturi=https://developers.google.com/oauthplayground
 ```
 
 ---
