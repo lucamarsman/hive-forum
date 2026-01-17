@@ -1,43 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
-  <link rel="stylesheet" type="text/css" href="/public/assets/community.css" title="style" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-</head>
-<body>
+  <head>
+    <meta
+      charset="UTF-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Index</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/public/assets/community.css"
+      title="style"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header id="main-nav">
+        <div id="brand">
+          <img id="toggle-btn" src="/public/assets/images/toggle.svg" />
+          <img src="/public/assets/images/hive-logo.svg" id="logo" />
+          <img src="/public/assets/images/Hive.svg" id="brand-text" />
+        </div>
+        <div class="search-nav">
+          <form action="" id="searchForm" method="POST">
+            <input
+              type="text"
+              id="search-bar"
+              placeholder="Search Hive"
+              name="search_val"
+            />
+            <button
+              type="submit"
+              id="search-button"
+              name="action"
+              value="search"
+            >
+              Go
+            </button>
+          </form>
+        </div>
+        <div id="button-container">
+          <button id="btn1" onclick="window.location.href = '/register'">
+            Sign Up
+          </button>
+          <button id="btn2" onclick="window.location.href = '/login'">
+            Log In
+          </button>
+        </div>
+      </header>
 
-<div class="wrapper">
-    <header id="main-nav">
-      <div id="brand">
-        <img id="toggle-btn" src="/public/assets/images/toggle.svg">
-        <img src="/public/assets/images/hive-logo.svg" id="logo">
-        <img src="/public/assets/images/Hive.svg" id="brand-text">
-      </div>
-      <div class="search-nav">
-        <form action="" id="searchForm" method="POST">
-          <input type="text" id="search-bar" placeholder="Search Hive" name="search_val">
-          <button type="submit" id="search-button" name="action" value="search">Go</button>
-        </form>
-      </div>
-      <div id="button-container">
-        <button id="btn1" onclick="window.location.href='/register'">Sign Up</button>
-        <button id="btn2" onclick="window.location.href='/login'">Log In</button>
-      </div>
-    </header>
-
-    <main id="main-content">
-      <div id="content-start">
-        <a id="home-button" class="active"><span class="span-home"><img src="/public/assets/images/home-active.svg">Home</span></a>
-        <a id="popular-button"><span class="span-popular"><img src="/public/assets/images/popular-inactive.svg">Popular</span></a>
-        <hr>
-        <button class="content-start-button-1"><span class="span-start">Recent<img src="/public/assets/images/dropdown-arrow-up.svg" class="dropdown-arrow-1"></span></button>
-          <div id="dropdown-menu-recent" class="visible">
-  
-          </div>
-        <hr>
-        <button class="content-start-button-2"><span class="span-start">Topics<img src="/public/assets/images/dropdown-arrow-up.svg" class="dropdown-arrow-2"></span></button>
+      <main id="main-content">
+        <div id="content-start">
+          <a id="home-button" class="active"
+            ><span class="span-home"
+              ><img src="/public/assets/images/home-active.svg" />Home</span
+            ></a
+          >
+          <a id="popular-button"
+            ><span class="span-popular"
+              ><img
+                src="/public/assets/images/popular-inactive.svg"
+              />Popular</span
+            ></a
+          >
+          <hr />
+          <button class="content-start-button-1">
+            <span class="span-start"
+              >Recent<img
+                src="/public/assets/images/dropdown-arrow-up.svg"
+                class="dropdown-arrow-1"
+            /></span>
+          </button>
+          <div id="dropdown-menu-recent" class="visible"></div>
+          <hr />
+          <button class="content-start-button-2">
+            <span class="span-start"
+              >Topics<img
+                src="/public/assets/images/dropdown-arrow-up.svg"
+                class="dropdown-arrow-2"
+            /></span>
+          </button>
           <div id="dropdown-menu-topics" class="visible">
             <a href="#">Science</a>
             <a href="#">Sports</a>
@@ -52,299 +96,325 @@
             <a href="#">Q&As</a>
             <a href="#">Food & Drink</a>
           </div>
-        <hr>
-        <button class="content-start-button-3"><span class="span-start">Resources<img src="/public/assets/images/dropdown-arrow-up.svg" class="dropdown-arrow-3"></span></button>
+          <hr />
+          <button class="content-start-button-3">
+            <span class="span-start"
+              >Resources<img
+                src="/public/assets/images/dropdown-arrow-up.svg"
+                class="dropdown-arrow-3"
+            /></span>
+          </button>
           <div id="dropdown-menu-resources" class="visible">
-            <a href="/communities">Communities</a>
+            <a href="/communities">communities</a>
             <a href="/about">About</a>
             <a href="/help">Help</a>
           </div>
-      </div>
-
-    <div id="community-content">
-      <div id = "community-banner">
-        <div id="logoContainer"><img id="community-logo"></div>
-        <h1 id="community-name"></h1>
-        <div id="community-btns">
-            <button id="new-post-btn"><span><img>Create Post</span></button>
-            <button id="join-btn">Join</button>
         </div>
-      </div>
 
-      <div id="postsContainer">
-        <div id="filter-container">
-          <span id="filter-span">New<img src="/public/assets/images/dropdown-arrow-up.svg" class="dropdown-arrow-sort"></span>
-          <div id="dropdown-menu-filter" class="hidden">
-            <p id="filter-header">Sort By</p>
-            <div id="filter-options">
-              <a>Top</a> 
-              <a>New</a>
-              <a>Hot</a>   
+        <div id="community-content">
+          <div id="community-banner">
+            <div id="logoContainer"><img id="community-logo" /></div>
+            <h1 id="community-name"></h1>
+            <div id="community-btns">
+              <button id="new-post-btn">
+                <span><img />Create Post</span>
+              </button>
+              <button id="join-btn">Join</button>
             </div>
           </div>
-        </div>
-        <hr>
-      </div>
 
-      <div id="content-end">
-        <h3 id="right-header"></h3>
-        <span id="birth-span"><img src="/public/assets/images/cake-slice.svg" id="cake-slice"><p id="created-at"></p></span>
-        <div id="community-stats-container">
-            <div id="member-count-box">
+          <div id="postsContainer">
+            <div id="filter-container">
+              <span id="filter-span"
+                >New<img
+                  src="/public/assets/images/dropdown-arrow-up.svg"
+                  class="dropdown-arrow-sort"
+              /></span>
+              <div id="dropdown-menu-filter" class="hidden">
+                <p id="filter-header">Sort By</p>
+                <div id="filter-options">
+                  <a>Top</a>
+                  <a>New</a>
+                  <a>Hot</a>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+
+          <div id="content-end">
+            <h3 id="right-header"></h3>
+            <span id="birth-span"
+              ><img
+                src="/public/assets/images/cake-slice.svg"
+                id="cake-slice" />
+              <p id="created-at"></p
+            ></span>
+            <div id="community-stats-container">
+              <div id="member-count-box">
                 <h3 id="member-count"></h3>
                 <p>Members</p>
-            </div>
+              </div>
 
-            <div id="size-rank-box">
+              <div id="size-rank-box">
                 <h3 id="size-rank"></h3>
                 <p>Rank by size</p>
+              </div>
             </div>
+            <hr />
+            <p id="description"></p>
+          </div>
         </div>
-        <hr>
-        <p id="description"></p>
-      </div>
+      </main>
     </div>
-    </main>
 
-  </div>
+    <script src="/public/loadCommunity.js"></script>
+    <script src="/public/loadPost.js"></script>
 
-  <script src="/public/loadCommunity.js"></script>
-  <script src="/public/loadPost.js"></script>
+    <script>
+      let topicList = [];
+      document.addEventListener("DOMContentLoaded", () => {
+        const topicLinks = document.querySelectorAll("#dropdown-menu-topics a");
 
-  <script>
-    let topicList = [];
-    document.addEventListener("DOMContentLoaded", () => { 
-      const topicLinks = document.querySelectorAll("#dropdown-menu-topics a");
-
-      topicLinks.forEach(link => {
-        topicList.push(link.textContent.trim());
+        topicLinks.forEach((link) => {
+          topicList.push(link.textContent.trim());
           link.addEventListener("click", (event) => {
             event.preventDefault(); // Prevent default anchor behavior
-              const topic = link.textContent.trim(); // Get the topic name
-              console.log(`Loading posts for topic: ${topic}`);
+            const topic = link.textContent.trim(); // Get the topic name
+            console.log(`Loading posts for topic: ${topic}`);
 
-              // Update states for the new topic
-              searchMode = true;
-              lastSearchQuery = topic;
-              currentPage = 1; // Reset to first page
-              morePostsAvailable = true;
+            // Update states for the new topic
+            searchMode = true;
+            lastSearchQuery = topic;
+            currentPage = 1; // Reset to first page
+            morePostsAvailable = true;
 
-              const postsContainer = document.getElementById("postsContainer");
-              postsContainer.innerHTML = ""; // Clear current posts
+            const postsContainer = document.getElementById("postsContainer");
+            postsContainer.innerHTML = ""; // Clear current posts
 
-              loadPosts(topic); // Fetch posts for the selected topic
-
-
+            loadPosts(topic); // Fetch posts for the selected topic
           });
+        });
       });
-  });
-    // Check viewport size on load and on resize
-    const phoneWidthQuery = window.matchMedia("(max-width: 1280px)");
+      // Check viewport size on load and on resize
+      const phoneWidthQuery = window.matchMedia("(max-width: 1280px)");
 
-    // Function to handle viewport changes
-    function handleViewportChange(e) {
+      // Function to handle viewport changes
+      function handleViewportChange(e) {
         console.log(`Viewport width: ${window.innerWidth}px`);
         if (e.matches) {
-            console.log("Viewport is phone width or smaller.");
-            document.getElementById("toggle-btn").style.display = "block"; // Show button
+          console.log("Viewport is phone width or smaller.");
+          document.getElementById("toggle-btn").style.display = "block"; // Show button
         } else {
-            console.log("Viewport is larger than phone width.");
-            document.getElementById("toggle-btn").style.display = "none"; // Hide button
+          console.log("Viewport is larger than phone width.");
+          document.getElementById("toggle-btn").style.display = "none"; // Hide button
         }
-    }
+      }
 
-    // Add event listener for matchMedia
-    phoneWidthQuery.addEventListener("change", handleViewportChange);
+      // Add event listener for matchMedia
+      phoneWidthQuery.addEventListener("change", handleViewportChange);
 
-    // Trigger the function initially to handle current state
-    handleViewportChange(phoneWidthQuery);
+      // Trigger the function initially to handle current state
+      handleViewportChange(phoneWidthQuery);
 
-    // Additional debug: Listen for resize to ensure innerWidth changes are detected
-    window.addEventListener("resize", () => {
+      // Additional debug: Listen for resize to ensure innerWidth changes are detected
+      window.addEventListener("resize", () => {
         console.log(`Resized. Current width: ${window.innerWidth}px`);
-    });
+      });
 
+      const toggleBtn = document.getElementById("toggle-btn");
+      const sideNav = document.getElementById("content-start");
+      const homeBtn = document.getElementById("home-button");
+      const popularBtn = document.getElementById("popular-button");
+      const dropdownMenuRecent = document.getElementById(
+        "dropdown-menu-recent",
+      );
+      const dropdownMenuTopics = document.getElementById(
+        "dropdown-menu-topics",
+      );
+      const dropdownMenuResources = document.getElementById(
+        "dropdown-menu-resources",
+      );
+      const dropdownToggle1 = document.querySelector(".content-start-button-1");
+      const dropdownToggle2 = document.querySelector(".content-start-button-2");
+      const dropdownToggle3 = document.querySelector(".content-start-button-3");
+      const dropdownArrow1 = document.querySelector(".dropdown-arrow-1");
+      const dropdownArrow2 = document.querySelector(".dropdown-arrow-2");
+      const dropdownArrow3 = document.querySelector(".dropdown-arrow-3");
 
-    const toggleBtn = document.getElementById("toggle-btn");
-    const sideNav = document.getElementById("content-start");
-    const homeBtn = document.getElementById("home-button");
-    const popularBtn = document.getElementById("popular-button");
-    const dropdownMenuRecent = document.getElementById('dropdown-menu-recent');
-    const dropdownMenuTopics = document.getElementById('dropdown-menu-topics');
-    const dropdownMenuResources = document.getElementById('dropdown-menu-resources');
-    const dropdownToggle1 = document.querySelector(".content-start-button-1");
-    const dropdownToggle2 = document.querySelector(".content-start-button-2");
-    const dropdownToggle3 = document.querySelector(".content-start-button-3");
-    const dropdownArrow1 = document.querySelector(".dropdown-arrow-1");
-    const dropdownArrow2 = document.querySelector(".dropdown-arrow-2");
-    const dropdownArrow3 = document.querySelector(".dropdown-arrow-3");
-
-    homeBtn.addEventListener("click", () => {
-      if(!homeBtn.classList.contains("active")){
-        homeBtn.classList.add("active");
-        popularBtn.classList.remove("active");
-      }
-    })
-
-    popularBtn.addEventListener("click", () => {
-      if(!popularBtn.classList.contains("active")){
-        popularBtn.classList.add("active");
-        homeBtn.classList.remove("active");
-      }
-    })
-
-    dropdownToggle1.addEventListener('click', () => {
-        if (dropdownMenuRecent.classList.contains('visible')) {
-            dropdownMenuRecent.classList.remove('visible');
-            dropdownMenuRecent.classList.add('hidden');
-            dropdownArrow1.classList.add("rotate-arrow");
-        } else {
-            dropdownMenuRecent.classList.remove('hidden');
-            dropdownMenuRecent.classList.add('visible');
-            dropdownArrow1.classList.remove("rotate-arrow");
+      homeBtn.addEventListener("click", () => {
+        if (!homeBtn.classList.contains("active")) {
+          homeBtn.classList.add("active");
+          popularBtn.classList.remove("active");
         }
-    });
+      });
 
-    dropdownToggle2.addEventListener('click', () => {
-        if (dropdownMenuTopics.classList.contains('visible')) {
-            dropdownMenuTopics.classList.remove('visible');
-            dropdownMenuTopics.classList.add('hidden');
-            dropdownArrow2.classList.add("rotate-arrow");
-        } else {
-            dropdownMenuTopics.classList.remove('hidden');
-            dropdownMenuTopics.classList.add('visible');
-            dropdownArrow2.classList.remove("rotate-arrow");
+      popularBtn.addEventListener("click", () => {
+        if (!popularBtn.classList.contains("active")) {
+          popularBtn.classList.add("active");
+          homeBtn.classList.remove("active");
         }
-    });
+      });
 
-    dropdownToggle3.addEventListener('click', () => {
-        if (dropdownMenuResources.classList.contains('visible')) {
-            dropdownMenuResources.classList.remove('visible');
-            dropdownMenuResources.classList.add('hidden');
-            dropdownArrow3.classList.add("rotate-arrow");
+      dropdownToggle1.addEventListener("click", () => {
+        if (dropdownMenuRecent.classList.contains("visible")) {
+          dropdownMenuRecent.classList.remove("visible");
+          dropdownMenuRecent.classList.add("hidden");
+          dropdownArrow1.classList.add("rotate-arrow");
         } else {
-            dropdownMenuResources.classList.remove('hidden');
-            dropdownMenuResources.classList.add('visible');
-            dropdownArrow3.classList.remove("rotate-arrow");
+          dropdownMenuRecent.classList.remove("hidden");
+          dropdownMenuRecent.classList.add("visible");
+          dropdownArrow1.classList.remove("rotate-arrow");
         }
-    });
+      });
 
-    toggleBtn.addEventListener("click", () => {
-      if (sideNav.style.display === "none" || sideNav.style.display === "") {
-        sideNav.style.display = "block"; 
-        toggleBtn.src = "/public/assets/images/cross.svg";
-      } else {
-        sideNav.style.display = "none"; 
-        toggleBtn.src = "/public/assets/images/toggle.svg";
-      }
-    })
+      dropdownToggle2.addEventListener("click", () => {
+        if (dropdownMenuTopics.classList.contains("visible")) {
+          dropdownMenuTopics.classList.remove("visible");
+          dropdownMenuTopics.classList.add("hidden");
+          dropdownArrow2.classList.add("rotate-arrow");
+        } else {
+          dropdownMenuTopics.classList.remove("hidden");
+          dropdownMenuTopics.classList.add("visible");
+          dropdownArrow2.classList.remove("rotate-arrow");
+        }
+      });
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const communityName = window.location.pathname.split('/')[2]; // Extract the community name
-      let recentCommunities = JSON.parse(localStorage.getItem('recentCommunities')) || []; // Get the existing list
-      const recentDropdown = document.getElementById("dropdown-menu-recent");
+      dropdownToggle3.addEventListener("click", () => {
+        if (dropdownMenuResources.classList.contains("visible")) {
+          dropdownMenuResources.classList.remove("visible");
+          dropdownMenuResources.classList.add("hidden");
+          dropdownArrow3.classList.add("rotate-arrow");
+        } else {
+          dropdownMenuResources.classList.remove("hidden");
+          dropdownMenuResources.classList.add("visible");
+          dropdownArrow3.classList.remove("rotate-arrow");
+        }
+      });
 
-      if(recentCommunities.length > 0){
-        recentCommunities.forEach((item, index) => {
-          const recentItem = document.createElement("span");
-          recentItem.className = "recent-item";
-          recentItem.id = `recent-item-${index}`;
+      toggleBtn.addEventListener("click", () => {
+        if (sideNav.style.display === "none" || sideNav.style.display === "") {
+          sideNav.style.display = "block";
+          toggleBtn.src = "/public/assets/images/cross.svg";
+        } else {
+          sideNav.style.display = "none";
+          toggleBtn.src = "/public/assets/images/toggle.svg";
+        }
+      });
 
-          const communityLogo = document.createElement("img");
-          communityLogo.className = "recent-logo";
-          communityLogo.id = `recent-logo-${index}`;
+      document.addEventListener("DOMContentLoaded", () => {
+        // Extract the community name
+        const communityName = decodeURIComponent(
+          window.location.pathname.split("/")[2] || "",
+        );
+        let recentCommunities =
+          JSON.parse(localStorage.getItem("recentCommunities")) || []; // Get the existing list
+        const recentDropdown = document.getElementById("dropdown-menu-recent");
 
-          const recentTitle = document.createElement("p");
-          recentTitle.className = "recent-title";
-          recentTitle.id = `recent-title-${index}`;
-          recentTitle.innerHTML = `h/${item}`;
+        if (recentCommunities.length > 0) {
+          recentCommunities.forEach((item, index) => {
+            const recentItem = document.createElement("span");
+            recentItem.className = "recent-item";
+            recentItem.id = `recent-item-${index}`;
 
-          fetch(`/communities/getLogo/${item}`)
-            .then(response => response.json())
-            .then(data => {
-              communityLogo.src = data[0].logo_path.includes("default") ? data[0].logo_path : '/' + data[0].logo_path;
-            })
+            const communityLogo = document.createElement("img");
+            communityLogo.className = "recent-logo";
+            communityLogo.id = `recent-logo-${index}`;
 
-          recentItem.addEventListener("click", () => {
-            window.location.href = `/communities/${item}`
-          })
+            const recentTitle = document.createElement("p");
+            recentTitle.className = "recent-title";
+            recentTitle.id = `recent-title-${index}`;
+            recentTitle.innerHTML = `h/${item}`;
 
-          recentItem.appendChild(communityLogo);
-          recentItem.appendChild(recentTitle);
-          recentDropdown.appendChild(recentItem);
-        })
-      }
+            fetch(`/communities/getLogo/${encodeURIComponent(item)}`)
+              .then((response) => response.json())
+              .then((data) => {
+                communityLogo.src = data[0].logo_path.includes("default")
+                  ? data[0].logo_path
+                  : "/" + data[0].logo_path;
+              });
 
-      if (communityName) {
-          recentCommunities = recentCommunities.filter(name => name !== communityName); // Remove duplicates
+            recentItem.addEventListener("click", () => {
+              window.location.href = `/communities/${encodeURIComponent(item)}`;
+            });
+
+            recentItem.appendChild(communityLogo);
+            recentItem.appendChild(recentTitle);
+            recentDropdown.appendChild(recentItem);
+          });
+        }
+
+        if (communityName) {
+          recentCommunities = recentCommunities.filter(
+            (name) => name !== communityName,
+          ); // Remove duplicates
           recentCommunities.unshift(communityName); // Add the current community to the top
           const maxCommunities = 5; // Limit to 5 items
           if (recentCommunities.length > maxCommunities) {
-              recentCommunities.pop(); // Remove the oldest item
+            recentCommunities.pop(); // Remove the oldest item
           }
-          localStorage.setItem('recentCommunities', JSON.stringify(recentCommunities)); // Save updated list
-      }
-
-      const btn1 = document.getElementById("btn1");
-      const btn2 = document.getElementById("btn2");
-
-      const updateButtons = (isAuthenticated) => {
-          if (isAuthenticated) {
-              btn1.textContent = "Profile";
-              btn1.onclick = () => window.location.href = '/profile';
-              btn2.textContent = "Log Out";
-              btn2.onclick = async () => {
-                  try {
-                      const response = await fetch('/user/logout', { method: 'GET' });
-                      if (response.ok) {
-                          window.location.reload(); // Reload page to reflect logout state
-                      } else {
-                          console.error("Logout failed:", response.statusText);
-                      }
-                  } catch (error) {
-                      console.error("Error logging out:", error);
-                  }
-              };
-          } else {
-              btn1.textContent = "Register";
-              btn1.onclick = () => window.location.href = '/register';
-              btn2.textContent = "Log In";
-              btn2.onclick = () => window.location.href = '/login';
-          }
-      };
-
-      // Check authentication status on page load
-      fetch('/user/checkAuth')
-          .then(response => {
-              const isAuthenticated = response.status === 200;
-              updateButtons(isAuthenticated);
-          })
-          .catch(error => {
-              console.error("Error checking auth status:", error);
-          });
-    });
-
-    const filterButton = document.getElementById("filter-span");
-    filterButton.addEventListener("click", () => {
-      const filterMenu = document.getElementById("dropdown-menu-filter");
-      if(filterButton.classList.contains('active')){
-        filterButton.classList.remove('active');
-      }else{
-        filterButton.classList.add('active');
-      }
-
-      if (filterMenu.classList.contains('visible')) {
-            filterMenu.classList.remove('visible');
-            filterMenu.classList.add('hidden');
-        } else {
-            filterMenu.classList.remove('hidden');
-            filterMenu.classList.add('visible');
+          localStorage.setItem(
+            "recentCommunities",
+            JSON.stringify(recentCommunities),
+          ); // Save updated list
         }
-    })
 
+        const btn1 = document.getElementById("btn1");
+        const btn2 = document.getElementById("btn2");
 
-  </script>
+        const updateButtons = (isAuthenticated) => {
+          if (isAuthenticated) {
+            btn1.textContent = "Profile";
+            btn1.onclick = () => (window.location.href = "/profile");
+            btn2.textContent = "Log Out";
+            btn2.onclick = async () => {
+              try {
+                const response = await fetch("/user/logout", { method: "GET" });
+                if (response.ok) {
+                  window.location.reload(); // Reload page to reflect logout state
+                } else {
+                  console.error("Logout failed:", response.statusText);
+                }
+              } catch (error) {
+                console.error("Error logging out:", error);
+              }
+            };
+          } else {
+            btn1.textContent = "Register";
+            btn1.onclick = () => (window.location.href = "/register");
+            btn2.textContent = "Log In";
+            btn2.onclick = () => (window.location.href = "/login");
+          }
+        };
 
-  
-</body>
+        // Check authentication status on page load
+        fetch("/user/checkAuth")
+          .then((response) => {
+            const isAuthenticated = response.status === 200;
+            updateButtons(isAuthenticated);
+          })
+          .catch((error) => {
+            console.error("Error checking auth status:", error);
+          });
+      });
+
+      const filterButton = document.getElementById("filter-span");
+      filterButton.addEventListener("click", () => {
+        const filterMenu = document.getElementById("dropdown-menu-filter");
+        if (filterButton.classList.contains("active")) {
+          filterButton.classList.remove("active");
+        } else {
+          filterButton.classList.add("active");
+        }
+
+        if (filterMenu.classList.contains("visible")) {
+          filterMenu.classList.remove("visible");
+          filterMenu.classList.add("hidden");
+        } else {
+          filterMenu.classList.remove("hidden");
+          filterMenu.classList.add("visible");
+        }
+      });
+    </script>
+  </body>
 </html>

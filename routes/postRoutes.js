@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 
 router.post('/new-post', postLimiter, validateToken, upload.single('mediaUpload'), PostController.createPost); // Create new post
 router.post('/communities/:communityName/new-post', postLimiter, validateToken, upload.single('mediaUpload'), PostController.createPost);
-router.get("/fetch-posts", validateToken, PostController.fetchPost); // Fetch Posts
+router.get("/fetch-posts", validateToken, PostController.fetchPost); // Fetch posts
 router.get("/post-history/:username", PostController.fetchPostHistory); // Fetch user's Post History
 
 //Search route

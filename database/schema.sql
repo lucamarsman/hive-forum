@@ -1,6 +1,6 @@
 -- Hive Forum Database Schema
 
--- Users Table
+-- users Table
 CREATE TABLE `users` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(255) NOT NULL UNIQUE,
@@ -11,9 +11,9 @@ CREATE TABLE `users` (
   `bio` VARCHAR(150) DEFAULT NULL,
   `reset_link_timestamp` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) 
+);
 
--- Communities Table
+-- communities Table
 CREATE TABLE `communities` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL UNIQUE,
@@ -23,7 +23,7 @@ CREATE TABLE `communities` (
   `logo_path` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) 
+);
 
 -- Community Memberships Table
 CREATE TABLE `communitymemberships` (
@@ -36,9 +36,9 @@ CREATE TABLE `communitymemberships` (
   UNIQUE (`user_id`, `community_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   FOREIGN KEY (`community_id`) REFERENCES `communities` (`id`) ON DELETE CASCADE
-) 
+);
 
--- Posts Table
+-- posts Table
 CREATE TABLE `posts` (
   `post_id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT DEFAULT NULL,
@@ -52,9 +52,9 @@ CREATE TABLE `posts` (
   PRIMARY KEY (`post_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   FOREIGN KEY (`community_id`) REFERENCES `communities` (`id`) ON DELETE CASCADE
-)
+);
 
--- Comments Table
+-- comments Table
 CREATE TABLE `comments` (
   `comment_id` INT NOT NULL AUTO_INCREMENT,
   `post_id` INT DEFAULT NULL,
@@ -65,9 +65,9 @@ CREATE TABLE `comments` (
   PRIMARY KEY (`comment_id`),
   FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) 
+);
 
--- Likes Table
+-- likes Table
 CREATE TABLE `likes` (
   `like_id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
@@ -76,9 +76,9 @@ CREATE TABLE `likes` (
   UNIQUE (`user_id`, `post_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`)
-) 
+);
 
--- Saves Table
+-- saves Table
 CREATE TABLE `saves` (
   `save_id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE `saves` (
   UNIQUE (`user_id`, `post_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`)
-) 
+);
 
 -- Profile Pictures Table
 CREATE TABLE `profilepictures` (
@@ -97,13 +97,13 @@ CREATE TABLE `profilepictures` (
   `uploaded_on` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`picture_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) 
+);
 
--- Registry Table
+-- registry Table
 CREATE TABLE `registry` (
   `email` VARCHAR(255) DEFAULT NULL,
   `password` VARCHAR(255) DEFAULT NULL,
   `username` VARCHAR(255) DEFAULT NULL,
   `register_link` VARCHAR(255) DEFAULT NULL,
   `register_link_timestamp` VARCHAR(255) DEFAULT NULL
-) 
+);

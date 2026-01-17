@@ -13,23 +13,23 @@ Hive Forum is a **full-stack community-driven discussion platform** where users 
 - **Password reset & email confirmation** using **Nodemailer**.
 
 #### 🏠 Community System
-- Users can **create and join** communities ("hives").
+- users can **create and join** communities ("hives").
 - Community pages display **posts and statistics**.
 
 #### 📝 Post & Media Management
-- Users can **create, edit, and delete** posts.
+- users can **create, edit, and delete** posts.
 - Support for **image and video uploads**.
 - **Like and save posts** functionality.
 
-#### 💬 Comments & Replies
-- Users can **create, edit, and delete** comments and replies.
+#### 💬 comments & Replies
+- users can **create, edit, and delete** comments and replies.
 - **Nested comment system** (up to 5 levels deep).
 
 #### 🔄 Infinite Scroll & Pagination
-- Posts and comments **load dynamically** to improve performance.
+- posts and comments **load dynamically** to improve performance.
 
 #### 🔍 Search & Filtering _(Partial)_
-- Users can **search for posts** by keywords.
+- users can **search for posts** by keywords.
 - Filtering by **tags and categories** _(still in progress)._
 
 #### 🔒 Rate Limiting & Security
@@ -136,7 +136,7 @@ redirecturi=https://developers.google.com/oauthplayground
 
 **To manually set up the database, refer to the /database/schema.sql file for table creation queries.**
 
-### 📌 Users Table
+### 📌 users Table
 
 | Column Name        | Data Type        | Constraints                            | Description                        |
 |--------------------|------------------|----------------------------------------|------------------------------------|
@@ -148,7 +148,7 @@ redirecturi=https://developers.google.com/oauthplayground
 | `reset_link`       | VARCHAR(255)     | NULLABLE                               | Password reset token               |
 | `bio`              | VARCHAR(150)     | NULLABLE                               | User bio (optional)                |
 
-### 📌 Posts Table
+### 📌 posts Table
 
 | Column Name       | Data Type        | Constraints                                 | Description                         |
 |-------------------|------------------|---------------------------------------------|-------------------------------------|
@@ -162,7 +162,7 @@ redirecturi=https://developers.google.com/oauthplayground
 | `community_id`    | INT              | FOREIGN KEY (communities) ON DELETE CASCADE | Community the post belongs to       |
 | `tags`            | JSON             | NULLABLE                                    | Tags associated with the post       |
 
-### 📌 Comments Table
+### 📌 comments Table
 
 | Column Name      | Data Type        | Constraints                            | Description                           |
 |------------------|------------------|----------------------------------------|---------------------------------------|
@@ -173,7 +173,7 @@ redirecturi=https://developers.google.com/oauthplayground
 | `timestamp`      | TIMESTAMP        | DEFAULT CURRENT_TIMESTAMP              | Time comment was posted               |
 | `parent_id`      | INT              | NULLABLE                               | Parent comment ID for nested comments |
 
-### 📌 Communities Table
+### 📌 communities Table
 
 | Column Name      | Data Type        | Constraints                            | Description                         |
 |------------------|------------------|----------------------------------------|-------------------------------------|
@@ -194,7 +194,7 @@ redirecturi=https://developers.google.com/oauthplayground
 | `role`           | ENUM             | DEFAULT 'member'                            | Role in the community               |
 | `joined_at`      | TIMESTAMP        | DEFAULT CURRENT_TIMESTAMP                   | When the user joined the community  |
 
-### 📌 Likes Table
+### 📌 likes Table
 
 | Column Name      | Data Type        | Constraints                             | Description                         |
 |------------------|------------------|-----------------------------------------|-------------------------------------|
@@ -202,7 +202,7 @@ redirecturi=https://developers.google.com/oauthplayground
 | `user_id`        | INT              | FOREIGN KEY (users)                     | ID of user who liked the post       |
 | `post_id`        | INT              | FOREIGN KEY (posts)                     | ID of post that was liked           |
 
-### 📌 Saves Table
+### 📌 saves Table
 
 | Column Name      | Data Type        | Constraints                             | Description                         |
 |------------------|------------------|-----------------------------------------|-------------------------------------|
@@ -219,7 +219,7 @@ redirecturi=https://developers.google.com/oauthplayground
 | `image_path`     | VARCHAR(255)     | NULLABLE                                 | Path to profile picture             |
 | `uploaded_on`    | DATETIME         | DEFAULT CURRENT_TIMESTAMP                | Upload date                         |
 
-### 📌 Registry Table
+### 📌 registry Table
 
 | Column Name               | Data Type       | Constraints | Description                           |
 |---------------------------|-----------------|-------------|---------------------------------------|

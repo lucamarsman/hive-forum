@@ -1,18 +1,21 @@
-const mysql2 = require("mysql2"); // import mysql2
+const mysql = require("mysql2");
 
-//initialize database connection
-const db = mysql2.createConnection({ // create connection
-    host: "localhost",
-    user: "root",
-    password: process.env.db_password,
-    database: process.env.DB_NAME
-});
-//connect to database
-db.connect(err => {
-    if (err) {
-        throw err
-    }
-    console.log("Database connected")
+// Create DB connection using env vars
+const db = mysql.createConnection({
+  host: process.env.DB_HOST || "mysql",
+  user: process.env.DB_USER || "hive",
+  password: process.env.DB_PASSWORD || "hivepassword",
+  database: process.env.DB_NAME || "hive_forum",
+  port: process.env.DB_PORT || 3306,
 });
 
-module.exports = db; // export database connection
+// Connect
+db.connect((err) => {
+  if (err) {
+    console.error("Database connection failed:", err);
+    process.exit(1);
+  }
+  console.log("Database connected");
+});
+
+module.exports = db;

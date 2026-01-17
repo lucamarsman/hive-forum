@@ -32,9 +32,9 @@ class View { // view model
             let decodedToken = jwt_decode(req.cookies['refresh-token']) // decode JWT token
             const uid = decodedToken.user.userid; // get user ID from decoded JWT token
     
-            const username = await queryDb('SELECT username FROM Users WHERE user_id = ?', [uid]); // fetch username from database using user ID
-            const bioData = await queryDb('SELECT bio FROM Users WHERE user_id = ?', [uid]); // fetch bio from database using user ID
-            const dateJoined = await queryDb('SELECT registration_date FROM Users WHERE user_id = ?', [uid]); // fetch registration date from database using user ID
+            const username = await queryDb('SELECT username FROM users WHERE user_id = ?', [uid]); // fetch username from database using user ID
+            const bioData = await queryDb('SELECT bio FROM users WHERE user_id = ?', [uid]); // fetch bio from database using user ID
+            const dateJoined = await queryDb('SELECT registration_date FROM users WHERE user_id = ?', [uid]); // fetch registration date from database using user ID
     
             res.render('profile.ejs', { // render profile page with username, bio, and registration date
                 username: username[0].username,   
@@ -52,7 +52,7 @@ class View { // view model
         if (res.authenticated) { // if user is authenticated
             let decodedToken = jwt_decode(req.cookies['refresh-token']); // decode JWT token
             const uid = decodedToken.user.userid; // get user ID from decoded JWT token
-            const profileId = await queryDb('SELECT user_id FROM Users WHERE username = ?', [username]); // fetch user ID from database using username
+            const profileId = await queryDb('SELECT user_id FROM users WHERE username = ?', [username]); // fetch user ID from database using username
 
             // Check if profileId is not empty and user_id matches
             if (profileId.length > 0 && profileId[0].user_id == uid) {
@@ -60,8 +60,8 @@ class View { // view model
             }
 
             try { // try to fetch user's profile
-                const dateResult = await queryDb('SELECT registration_date FROM Users WHERE username = ?', [username]); // fetch registration date from database using username
-                const bioResult = await queryDb('SELECT bio FROM Users WHERE username = ?', [username]); // fetch bio from database using username
+                const dateResult = await queryDb('SELECT registration_date FROM users WHERE username = ?', [username]); // fetch registration date from database using username
+                const bioResult = await queryDb('SELECT bio FROM users WHERE username = ?', [username]); // fetch bio from database using username
     
                 // Check if dateResult and bioResult have data before attempting to render
                 if (dateResult.length > 0 && bioResult.length > 0) {
@@ -83,8 +83,8 @@ class View { // view model
         // if user is not logged in
 
         try { // try to fetch user's profile
-            const dateResult = await queryDb('SELECT registration_date FROM Users WHERE username = ?', [username]); // fetch registration date from database using username
-            const bioResult = await queryDb('SELECT bio FROM Users WHERE username = ?', [username]); // fetch bio from database using username
+            const dateResult = await queryDb('SELECT registration_date FROM users WHERE username = ?', [username]); // fetch registration date from database using username
+            const bioResult = await queryDb('SELECT bio FROM users WHERE username = ?', [username]); // fetch bio from database using username
 
             // Check if dateResult and bioResult have data before attempting to render
             if (dateResult.length > 0 && bioResult.length > 0) {
@@ -105,10 +105,10 @@ class View { // view model
 
     static async viewPost(req, res) { // view a post
         const postId = req.params.postId; // get post ID from request parameters
-        const post = await queryDb('SELECT * FROM Posts WHERE post_id = ?', [postId]); // fetch post from database using post ID
-        const comments = await queryDb('SELECT * FROM Comments WHERE post_id = ?', [postId]); // fetch comments from database using post ID
+        const post = await queryDb('SELECT * FROM posts WHERE post_id = ?', [postId]); // fetch post from database using post ID
+        const comments = await queryDb('SELECT * FROM comments WHERE post_id = ?', [postId]); // fetch comments from database using post ID
 
-        const posterId = await queryDb('SELECT user_id FROM Posts WHERE post_id = ?', [postId]);
+        const posterId = await queryDb('SELECT user_id FROM posts WHERE post_id = ?', [postId]);
         let isOwner = false;
        
         if(res.authenticated){
@@ -146,7 +146,7 @@ class View { // view model
                 mediaPath = null;
             }
             // Construct the SQL query and parameters based on whether a new media file is present
-            let query = "UPDATE Posts SET title = ?, content = ?";
+            let query = "UPDATE posts SET title = ?, content = ?";
             const params = [newTitle, newBody];
     
             if (mediaPath !== null) {
@@ -179,7 +179,7 @@ class View { // view model
         const postId = req.params.postId;
 
         try{
-            await queryDb("DELETE FROM Posts WHERE post_id = ?", [postId]);
+            await queryDb("DELETE FROM posts WHERE post_id = ?", [postId]);
             res.status(200).json({message: "Post deleted successfully"})
         }catch(error){
             res.status(500).json({ message: 'Failed to delete post', error: error.message });
@@ -188,9 +188,9 @@ class View { // view model
 
     static async getUserImage(req, res) { // get user's profile picture
         const username = req.params.username; // get username from request parameters
-        const userId = await queryDb("SELECT user_id FROM Users WHERE username = ?", [username]); // fetch user ID from database using username
+        const userId = await queryDb("SELECT user_id FROM users WHERE username = ?", [username]); // fetch user ID from database using username
 
-        const imageURL = await queryDb("SELECT image_path FROM ProfilePictures WHERE user_id = ?", [userId[0].user_id]); // fetch image path from database using user ID
+        const imageURL = await queryDb("SELECT image_path FROM profilepictures WHERE user_id = ?", [userId[0].user_id]); // fetch image path from database using user ID
         res.json(imageURL) // return image path as JSON
     }
 
