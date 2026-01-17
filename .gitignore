@@ -1,2 +1,6 @@
 # .gitignore
 process.env
+.env
+node_modules/
+public/uploads/
+public/assets
